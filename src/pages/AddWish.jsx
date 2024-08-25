@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import addwishImg from '../assets/addwish.png'; // 배경 이미지
 
 // Styled components
 const Container = styled.div`
@@ -11,7 +12,9 @@ const Container = styled.div`
   max-width: 900px; /* 컨테이너의 최대 너비를 900px로 설정 */
   margin: 0 auto;
   padding: 40px 20px; /* 위아래 패딩을 40px로 설정하고 좌우는 20px로 설정 */
-  background-color: #f8f9fa;
+  background-image: url(${addwishImg}); /* 배경 이미지 설정 */
+  background-size: cover; /* 배경 이미지 크기 조절 */
+  background-position: center; /* 배경 이미지 위치 설정 */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
@@ -19,7 +22,7 @@ const Container = styled.div`
 const Title = styled.h2`
   margin-bottom: 20px;
   font-size: 1.5rem;
-  color: #333;
+  color: #fff; /* 배경에 맞게 텍스트 색상 변경 */
 `;
 
 const Row = styled.div`
@@ -32,7 +35,7 @@ const Row = styled.div`
 const Label = styled.label`
   width: 150px; /* 라벨의 너비를 150px로 설정 */
   font-size: 1rem;
-  color: #333;
+  color: #fff; /* 배경에 맞게 텍스트 색상 변경 */
   font-weight: bold; /* 글자를 굵게 설정 */
 `;
 

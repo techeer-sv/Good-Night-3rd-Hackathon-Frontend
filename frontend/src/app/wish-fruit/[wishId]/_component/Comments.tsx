@@ -48,7 +48,7 @@ export default function Comments({ wishId }: CommentsProps) {
 
   return (
     <div className="mt-8">
-      <h3 className="text-lg font-bold text-yellow-600">댓글</h3>
+      <h3 className="text-lg font-bold text-gray-300">댓글</h3>
       <div className="flex items-center mt-4">
         <input
           type="text"
@@ -71,8 +71,8 @@ export default function Comments({ wishId }: CommentsProps) {
             className="border-b border-gray-300 py-2 flex flex-row justify-between"
           >
             <div className="flex flex-col">
-              <p>{comment.content}</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-white">{comment.content}</p>
+              <p className="text-sm text-gray-300">
                 {new Date(comment.createdAt).toLocaleString()}
               </p>
             </div>

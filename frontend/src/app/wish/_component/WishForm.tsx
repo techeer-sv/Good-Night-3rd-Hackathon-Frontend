@@ -43,7 +43,7 @@ export default function WishForm() {
 
   if (isAdmin) {
     return (
-      <div className="my-auto p-6 flex items-center justify-center">
+      <div className="my-auto p-6 flex items-center justify-center glass rounded-lg w-1/2">
         <p className="text-2xl text-red-600 font-bold my-auto">
           유저가 아니면 이 페이지에 접근할 권한이 없습니다.
         </p>
@@ -52,13 +52,13 @@ export default function WishForm() {
   }
 
   return (
-    <div className="w-full max-w-md bg-white shadow-md rounded-lg p-8 my-auto">
-      <h2 className="text-2xl font-bold text-center text-yellow-600 mb-6">
-        소원 열매 달기
+    <div className="w-full max-w-md bg-purple-800 bg-opacity-50 shadow-md rounded-lg p-8 my-auto glass">
+      <h2 className="text-2xl font-bold text-center text-yellow-300 mb-6">
+        소원 빌기
       </h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
-          <label className="block text-gray-700">제목</label>
+          <label className="block text-yellow-300">제목</label>
           <input
             type="text"
             className="w-full p-2 border border-gray-300 rounded mt-1"
@@ -67,7 +67,7 @@ export default function WishForm() {
           />
         </div>
         <div>
-          <label className="block text-gray-700">내용</label>
+          <label className="block text-yellow-300">내용</label>
           <textarea
             className="w-full p-2 border border-gray-300 rounded mt-1"
             value={content}
@@ -75,7 +75,7 @@ export default function WishForm() {
           />
         </div>
         <div>
-          <label className="block text-gray-700">카테고리</label>
+          <label className="block text-yellow-300">카테고리</label>
           <select
             className="w-full p-2 border border-gray-300 rounded mt-1"
             value={category}
@@ -94,7 +94,7 @@ export default function WishForm() {
         {error && <div className="text-red-500 text-sm">{error}</div>}
         <button
           type="submit"
-          className="bg-yellow-500 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-all duration-200"
+          className="bg-yellow-300 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-all duration-200"
         >
           소원 등록
         </button>

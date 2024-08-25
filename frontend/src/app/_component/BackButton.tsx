@@ -22,7 +22,7 @@ export default function BackButton() {
       >
         <path
           d="M96.7083 52.75L43.9583 105.5M43.9583 105.5L96.7083 158.25M43.9583 105.5H167.042"
-          stroke="black"
+          stroke="white"
           strokeWidth="24"
           strokeLinecap="round"
           strokeLinejoin="round"

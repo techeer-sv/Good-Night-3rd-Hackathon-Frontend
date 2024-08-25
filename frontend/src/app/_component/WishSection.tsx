@@ -56,16 +56,10 @@ export default function WishSection() {
   return (
     <div className="w-full">
       <div className="mb-4">
-        <label
-          htmlFor="category"
-          className="block text-lg font-medium text-gray-700"
-        >
-          카테고리 선택
-        </label>
         <select
           id="category"
           name="category"
-          className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          className="text-yellow-300 mt-1 border-none glass bg-yellow-500 bg-opacity-50 block w-fit p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
@@ -80,12 +74,12 @@ export default function WishSection() {
         </select>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 overflow-y-scroll h-[60vh]">
+      <div className="grid grid-cols-3 gap-8 overflow-y-scroll h-[60vh]">
         {wishes.map((wish, index) => (
           <div
             key={wish.id}
             ref={index === wishes.length - 1 ? lastWishElementRef : null}
-            className="flex flex-col justify-between min-h-[calc(60vh/3-1rem)]"
+            className="flex flex-col justify-between min-h-[calc(60vh/2-2rem)]"
           >
             <WishFruit wish={wish} />
           </div>

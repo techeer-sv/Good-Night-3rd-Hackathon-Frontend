@@ -10,7 +10,7 @@ export default function ApproveButton() {
   };
   return (
     <button
-      className="btn bg-yellow-500 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-all duration-200"
+      className="btn glass bg-yellow-500 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-all duration-200"
       onClick={onClick}
     >
       소원 승인 하기

@@ -51,7 +51,7 @@
 	header {
 		background-color: $primary-color;
 		color: white;
-		height: 3.75rem;
+		height: $header-height;
 		display: flex;
 		align-items: center;
 

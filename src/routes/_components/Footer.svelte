@@ -24,7 +24,7 @@
 
 <style lang="scss">
 	button {
-		position: absolute;
+		position: fixed;
 		bottom: 1.8%;
 		right: 1.8%;
 	}

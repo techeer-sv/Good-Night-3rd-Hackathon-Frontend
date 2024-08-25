@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import AuthButton from '@/app/_component/AuthButton';
 import { AuthProvider } from '@/app/_component/AuthContext';
+import BackButton from '@/app/_component/BackButton';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({
           {children}
           <AuthButton />
         </AuthProvider>
+        <BackButton />
       </body>
     </html>
   );

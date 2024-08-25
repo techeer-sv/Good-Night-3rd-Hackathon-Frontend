@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import addwishImg from '../assets/addwish.png'; // 배경 이미지
 import { addWish } from '../api/AddWishApi'; // AddWishApi에서 함수 가져오기
+import { useNavigate } from 'react-router-dom';
 
 // Styled components
 const Container = styled.div`
@@ -95,6 +96,7 @@ const AddWish = () => {
   const [category, setCategory] = useState('');
   const [content, setContent] = useState('');
   const [warning, setWarning] = useState('');
+  const navigate = useNavigate(); // useNavigate 훅을 사용하여 페이지 이동
 
   const handleSubmit = async () => {
     if (!title || !category || !content) {
@@ -114,6 +116,9 @@ const AddWish = () => {
     } catch (error) {
       setWarning('소원 등록에 실패했습니다. 나중에 다시 시도해 주세요.');
     }
+
+    navigate('/');
+
   };
 
   return (

@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react';
 import getComments from '@/app/wish-fruit/[wishId]/_lib/getComments';
 import postComment from '@/app/wish-fruit/[wishId]/_lib/postComment';
+import { useAuth } from '@/app/_component/AuthContext';
+import deleteComment from '@/app/wish-fruit/[wishId]/_lib/deleteComment';
 
 type Comment = {
-  id: number;
+  id: string;
   content: string;
   createdAt: Date;
   deletedAt: Date | null;
@@ -18,7 +20,7 @@ type CommentsProps = {
 export default function Comments({ wishId }: CommentsProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false);
+  const { isAdmin } = useAuth();
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -38,6 +40,16 @@ export default function Comments({ wishId }: CommentsProps) {
 
     // 댓글 입력란 비우기
     setCommentText('');
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    if (isAdmin) {
+      await deleteComment(commentId);
+
+      // 댓글 삭제 후 댓글 목록 다시 조회
+      const response = await getComments(wishId);
+      setComments(response);
+    }
   };
 
   return (
@@ -60,17 +72,22 @@ export default function Comments({ wishId }: CommentsProps) {
       </div>
       <ul className="mt-4">
         {comments.map((comment) => (
-          <li key={comment.id} className="border-b border-gray-300 py-2">
-            <p>{comment.content}</p>
-            <p className="text-sm text-gray-500">
-              {new Date(comment.createdAt).toLocaleString()}
-            </p>
+          <li
+            key={comment.id}
+            className="border-b border-gray-300 py-2 flex flex-row justify-between"
+          >
+            <div className="flex flex-col">
+              <p>{comment.content}</p>
+              <p className="text-sm text-gray-500">
+                {new Date(comment.createdAt).toLocaleString()}
+              </p>
+            </div>
             {isAdmin && (
               <button
-                className="text-red-500 text-sm mt-2"
-                // onClick={() => handleDeleteComment(comment.id)}
+                className="text-red-500 text-sm"
+                onClick={() => handleDeleteComment(comment.id)}
               >
-                댓글 삭제
+                삭제
               </button>
             )}
           </li>

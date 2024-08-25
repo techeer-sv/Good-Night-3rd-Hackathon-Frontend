@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { fruit } from "../assets/image";
+import { useParams } from "react-router-dom";
+import { getWishById } from "../apis/wishes";
 
 const Container = styled.div`
   display: flex;
@@ -50,17 +52,39 @@ const Text = styled.p`
 `;
 
 function WishDetail() {
+  const { id } = useParams(); // Extract the wish ID from the URL
+  const [wish, setWish] = useState(null); // State to store the wish details
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
+
+  useEffect(() => {
+    const fetchWishDetails = async () => {
+      try {
+        const data = await getWishById(id); // API 호출
+        setWish(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err);
+        setLoading(false);
+      }
+    };
+
+    fetchWishDetails(); // Fetch wish details on component mount
+  }, [id]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
   return (
     <Container>
       <BackgroundImage src={fruit} alt="Background Fruit" />
-      <Content>
-        <Title>취업 잘 되게 해 주세요</Title>
-        <Category>진로</Category>
-        <Text>
-          취업 하기 위해 여러 회사에 원서를 넣고 있습니다. 제발 취업 잘 되게 해
-          주세요!!
-        </Text>
-      </Content>
+      {wish && (
+        <Content>
+          <Title>{wish.title}</Title>
+          <Category>{wish.category}</Category>
+          <Text>{wish.content}</Text>
+        </Content>
+      )}
     </Container>
   );
 }

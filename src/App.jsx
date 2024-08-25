@@ -1,10 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
-import styled from "styled-components";
 import WishTree from "./pages/WishTree";
 import WishCreate from "./pages/WishCreate";
 import WishDetail from "./pages/WishDetail";
-import Admin from "./pages/admin";
+import Admin from "./pages/Admin";
 
 function App() {
   return (
@@ -13,7 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<WishTree />} />
         <Route path="/create" element={<WishCreate />} />
-        <Route path="/detail" element={<WishDetail />} />
+        <Route path="/detail/:id" element={<WishDetail />} />
         <Route path="/admin" element={<Admin />} />
       </Routes>
     </Router>

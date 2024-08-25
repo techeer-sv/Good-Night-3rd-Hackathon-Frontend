@@ -1,5 +1,5 @@
 import WishSection from '@/app/_component/WishSection'
-import AuthButton from '@/app/_component/AuthButton'
+import CreateWishButton from '@/app/_component/CreateWishButton'
 
 export default function WishTree() {
   return (
@@ -10,9 +10,7 @@ export default function WishTree() {
       <div className="w-full flex items-center justify-center">
         <WishSection />
       </div>
-      <button className="btn bg-yellow-500 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-all duration-200">
-        소원 열매 달기
-      </button>
+      <CreateWishButton />
     </div>
   )
 }

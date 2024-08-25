@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useAuth } from '@/app/_component/AuthContext';
 import { Wish } from '@/model/Wish';
+import { approveWish } from '@/app/wish-fruit/allow/_lib/approveWish';
+import { rejectWish } from '@/app/wish-fruit/allow/_lib/rejectWish';
 
 type AllowWishesProps = {
   wishes: Wish[];
@@ -10,6 +12,30 @@ type AllowWishesProps = {
 
 export default function AllowWishes({ wishes }: AllowWishesProps) {
   const [pendingWishes, setPendingWishes] = useState<Wish[]>(wishes);
+
+  const handleApprove = async (id: number) => {
+    try {
+      // 거절 API 호출
+      await approveWish(id);
+
+      // 승인된 소원 목록에서 제거
+      setPendingWishes(pendingWishes.filter((wish) => wish.id !== id));
+    } catch (error) {
+      console.error('소원 승인 실패:', error);
+    }
+  };
+
+  const handleReject = async (id: number) => {
+    try {
+      // 거절 API 호출
+      await rejectWish(id);
+
+      // 거절된 소원 목록에서 제거
+      setPendingWishes(pendingWishes.filter((wish) => wish.id !== id));
+    } catch (error) {
+      console.error('소원 거절 실패:', error);
+    }
+  };
 
   const { isAdmin } = useAuth();
 
@@ -39,13 +65,13 @@ export default function AllowWishes({ wishes }: AllowWishesProps) {
           </div>
           <div className="mt-4 flex space-x-4">
             <button
-              // onClick={() => handleApprove(wish.id)}
+              onClick={() => handleApprove(wish.id)}
               className="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition-all duration-200"
             >
               승인
             </button>
             <button
-              // onClick={() => handleReject(wish.id)}
+              onClick={() => handleReject(wish.id)}
               className="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-600 transition-all duration-200"
             >
               거절

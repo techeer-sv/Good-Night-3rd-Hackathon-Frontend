@@ -1,15 +1,35 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { postWish } from '../../apis/wish';
 
 	let permissions: string;
+
+	let subject: string = '';
 	let selectedCategory: string = '';
-	let subject = '';
-	let category = '';
-	let content = '';
+	let content: string = '';
 
 	onMount(() => {
 		permissions = localStorage.getItem('permissions') || '';
 	});
+
+	function handleSubmit() {
+		if (permissions === 'admin') {
+			alert('권한이 없습니다.');
+			return;
+		}
+
+		if (!subject || !selectedCategory || !content) {
+			alert('소원 제목, 카테고리, 내용을 모두 입력해주세요.');
+			return;
+		} else {
+			postWish(subject, selectedCategory, content).then((res) => {
+				console.log(res);
+				alert('소원 열매를 달았습니다.');
+				goto(`/wish-fruit/${res?.id}`, { replaceState: true });
+			});
+		}
+	}
 </script>
 
 <div class="page">
@@ -19,7 +39,7 @@
 	{:else}
 		<div class="post">
 			<div class="title">소원 제목</div>
-			<input class="subject-input" />
+			<input class="subject-input" bind:value={subject} placeholder="소원의 제목을 입력하세요" />
 		</div>
 
 		<div class="post">
@@ -38,11 +58,12 @@
 
 		<div class="post">
 			<div class="title">소원 내용</div>
-			<input class="content-input" />
+			<input class="content-input" bind:value={content} placeholder="소원의 내용을 작성하세요" />
 		</div>
+
 		<div class="post">
 			<div class="title" />
-			<button class="submit">소원 열매 달기</button>
+			<button class="submit" on:click={handleSubmit}>소원 열매 달기</button>
 		</div>
 	{/if}
 </div>

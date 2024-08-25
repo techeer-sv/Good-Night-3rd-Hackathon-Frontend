@@ -1,0 +1,22 @@
+/* components/Navbar.css */
+.navbar {
+    background-color: #FFA500;
+    padding: 10px;
+    color: white;
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    /* 고정 위치 설정 */
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    /* 다른 요소 위에 표시되도록 */
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+}

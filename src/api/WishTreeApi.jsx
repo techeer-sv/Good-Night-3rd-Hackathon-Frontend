@@ -6,6 +6,7 @@ export const getWishes = async (page) => {
     try {
       const response = await api.get('/wishes', {
         params: {
+          status: 'APPROVED', // 상태를 APPROVED로 고정
           page: page, // 동적으로 페이지 설정
           size: 9, // 고정된 사이즈
           sort: 'createdDate,desc' // 고정된 정렬

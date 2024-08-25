@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import getComments from '@/app/wish-fruit/[wishId]/_lib/getComments';
+import postComment from '@/app/wish-fruit/[wishId]/_lib/postComment';
 
 type Comment = {
   id: number;
@@ -28,6 +29,17 @@ export default function Comments({ wishId }: CommentsProps) {
     fetchComments();
   }, [wishId]);
 
+  const handleAddComment = async () => {
+    await postComment({ wishId: wishId, content: commentText });
+
+    // 댓글 추가 후 댓글 목록 다시 조회
+    const response = await getComments(wishId);
+    setComments(response);
+
+    // 댓글 입력란 비우기
+    setCommentText('');
+  };
+
   return (
     <div className="mt-8">
       <h3 className="text-lg font-bold text-yellow-600">댓글</h3>
@@ -41,7 +53,7 @@ export default function Comments({ wishId }: CommentsProps) {
         />
         <button
           className="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-all duration-200"
-          // onClick={handleAddComment}
+          onClick={handleAddComment}
         >
           댓글 작성
         </button>

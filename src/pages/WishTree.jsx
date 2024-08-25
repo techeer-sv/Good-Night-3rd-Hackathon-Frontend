@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import wishTreeImg from '../assets/wishTree-img.png'; // 배경 이미지
 // 카테고리별 이미지 import
 import careerImg from '../assets/career.png';
@@ -9,6 +10,7 @@ import moneyImg from '../assets/money.png';
 import goalsImg from '../assets/goals.png';
 import studyImg from '../assets/study.png';
 import othersImg from '../assets/others.png';
+import { dummyWishes } from '../data'; // 데이터 파일에서 import
 
 // 카테고리별 이미지 매핑
 const categoryImages = {
@@ -20,6 +22,7 @@ const categoryImages = {
   STUDY: studyImg,
   OTHERS: othersImg
 };
+
 // Styled components
 const Container = styled.div`
   width: 100vw; /* 화면의 전체 너비 */
@@ -56,7 +59,7 @@ const WishesContainer = styled.div`
   align-content: space-around;
 `;
 
-const WishCard = styled.div`
+const WishCard = styled(Link)`
   width: 152px; /* 고정된 너비 */
   height: 200px; /* 고정된 높이 */
   background: url(${(props) => categoryImages[props.category]}) no-repeat center center;
@@ -68,6 +71,7 @@ const WishCard = styled.div`
   padding: 10px;
   text-align: center;
   color: white;
+  text-decoration: none; /* 링크의 밑줄 제거 */
 `;
 
 const Title = styled.h3`
@@ -91,7 +95,8 @@ const Button = styled.button`
   border-radius: 4px;
   background-color: white; /* 배경색 흰색 */
   color: black; /* 글자색 검정색 */
-  border: 1px solid #ccc; /* 테두리 색상 */  cursor: pointer;
+  border: 1px solid #ccc; /* 테두리 색상 */
+  cursor: pointer;
   font-size: 2rem;
 
   &:hover {
@@ -99,23 +104,11 @@ const Button = styled.button`
   }
 
   &:disabled {
-    background-color: #fffff; /* 비활성화 상태 배경색 */
+    background-color: #f0f0f0; /* 비활성화 상태 배경색 */
     cursor: not-allowed;
   }
 `;
 
-// 더미 데이터
-const dummyWishes = [
-  { wishId: 1, title: "테커 가입", category: "CAREER", createdDate: "2024-08-24" },
-  { wishId: 2, title: "백엔드 공부", category: "STUDY", createdDate: "2024-08-23" },
-  { wishId: 3, title: "9만 전자 가자~", category: "MONEY", createdDate: "2024-08-22" },
-  { wishId: 4, title: "잠만 자고싶다.", category: "OTHERS", createdDate: "2024-08-21" },
-  { wishId: 5, title: "행복하자", category: "GOALS", createdDate: "2024-08-20" },
-  { wishId: 6, title: "손절칠까요", category: "RELATIONSHIP", createdDate: "2024-08-19" },
-  { wishId: 7, title: "3대 500", category: "HEALTH", createdDate: "2024-08-18" },
-  { wishId: 8, title: "수능 공부", category: "STUDY", createdDate: "2024-08-17" }, 
-  { wishId: 9, title: "1억 모으기", category: "MONEY", createdDate: "2024-08-16" },
-];
 
 const WishTree = () => {
   const [wishes, setWishes] = useState(dummyWishes); // 더미 데이터 사용
@@ -149,7 +142,11 @@ const WishTree = () => {
       </Dropdown>
       <WishesContainer>
         {wishes.map((wish) => (
-          <WishCard key={wish.wishId} category={wish.category}>
+          <WishCard 
+            key={wish.wishId} 
+            category={wish.category} 
+            to={`/wish-fruit/${wish.wishId}`} // 클릭 시 WishFruit 페이지로 이동
+          >
             <Title>{wish.title}</Title>
           </WishCard>
         ))}

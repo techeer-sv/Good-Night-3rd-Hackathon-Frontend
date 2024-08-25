@@ -6,6 +6,7 @@ import WishTree from './pages/WishTree';
 import AuthChangeButton from './components/AuthChangeButton';
 import AddWish from './pages/AddWish';
 import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
+import WishFruit from './pages/WishFruit';
 
 const App = () => {
    // 로컬 스토리지에서 초기 권한 상태를 불러온다.
@@ -26,6 +27,7 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<WishTree />} />
+        <Route path="/wish-fruit/:wishId" element={<WishFruit />} />
         <Route
           path="/Wish"
           element={

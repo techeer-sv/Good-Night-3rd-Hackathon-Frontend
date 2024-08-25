@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { checkBox, rejectBox } from "../assets/image"; // React 아이콘 사용
+import { fetchPendingWishes, updateWishStatus } from "../apis/wishes";
 
 const Container = styled.div`
   padding: 20px;
@@ -68,39 +69,65 @@ const ButtonImage = styled.img`
 `;
 
 function AdminPage() {
-  const [wishes, setWishes] = useState([
-    "내일 면접 잘 보게 해 주세요!",
-    "돈 잘 벌게 해 주세요~",
-    "내일 고백 성공 하길..",
-    "우리 가족 항상 건강!",
-  ]);
+  const [wishes, setWishes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleApprove = (index) => {
-    // 승인 버튼 클릭 시 처리 로직
-    console.log(`Wish ${index + 1} approved`);
+  const loadPendingWishes = async () => {
+    try {
+      const data = await fetchPendingWishes(0, 10); // API 호출
+      setWishes(data);
+      setLoading(false);
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+    }
   };
 
-  const handleReject = (index) => {
-    // 거부 버튼 클릭 시 처리 로직
-    console.log(`Wish ${index + 1} rejected`);
+  useEffect(() => {
+    loadPendingWishes();
+  }, []);
+
+  const handleUpdateStatus = async (id, status) => {
+    try {
+      await updateWishStatus(id, status); // API 호출
+      loadPendingWishes(); // 상태 업데이트 후 목록 다시 로딩
+    } catch (error) {
+      console.error("Error updating wish status:", error);
+    }
   };
+
+  const handleApprove = (id) => {
+    handleUpdateStatus(id, "CONFIRMED");
+  };
+
+  const handleReject = (id) => {
+    handleUpdateStatus(id, "REJECTED");
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <Container>
       <Title>소원 열매 승인</Title>
-      {wishes.map((wish, index) => (
-        <WishItem key={index}>
-          <WishText>{wish}</WishText>
-          <ButtonGroup>
-            <ApproveButton onClick={() => handleApprove(index)}>
-              <ButtonImage src={checkBox} alt="Approve" />
-            </ApproveButton>
-            <RejectButton onClick={() => handleReject(index)}>
-              <ButtonImage src={rejectBox} alt="Reject" />
-            </RejectButton>
-          </ButtonGroup>
-        </WishItem>
-      ))}
+      {wishes.length > 0 ? (
+        wishes.map((wish) => (
+          <WishItem key={wish.id}>
+            <WishText>{wish.title}</WishText>
+            <ButtonGroup>
+              <ApproveButton onClick={() => handleApprove(wish.id)}>
+                <ButtonImage src={checkBox} alt="Approve" />
+              </ApproveButton>
+              <RejectButton onClick={() => handleReject(wish.id)}>
+                <ButtonImage src={rejectBox} alt="Reject" />
+              </RejectButton>
+            </ButtonGroup>
+          </WishItem>
+        ))
+      ) : (
+        <div>No pending wishes.</div>
+      )}
     </Container>
   );
 }

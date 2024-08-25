@@ -1,5 +1,5 @@
-import WishSection from '@/app/_component/WishSection'
-import CreateWishButton from '@/app/_component/CreateWishButton'
+import WishSection from '@/app/_component/WishSection';
+import CreateWishButton from '@/app/_component/CreateWishButton';
 
 export default function WishTree() {
   return (
@@ -12,5 +12,5 @@ export default function WishTree() {
       </div>
       <CreateWishButton />
     </div>
-  )
+  );
 }

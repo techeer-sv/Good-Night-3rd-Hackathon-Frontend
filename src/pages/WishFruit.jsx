@@ -1,24 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import wishTreeImg from '../assets/wishTree-img.png'; // 배경 이미지 import
-import { dummyWishes } from '../data'; // 데이터 파일에서 import
-
-// 카테고리별 한글 매핑
-const categoryLabels = {
-  CAREER: '진로',
-  HEALTH: '건강',
-  RELATIONSHIP: '인간관계',
-  MONEY: '돈',
-  GOALS: '목표',
-  STUDY: '학업/성적',
-  OTHERS: '기타'
-};
+import { getWishById, deleteWishById } from '../api/WishFruitApi'; // API 호출 함수 import
 
 // Styled components
 const Container = styled.div`
-  width: 100vw; /* 화면의 전체 너비 */
-  height: 100vh; /* 화면의 전체 높이 */
+  width: 100vw;
+  height: 100vh;
   background-image: url(${wishTreeImg});
   background-size: cover;
   background-position: center;
@@ -31,7 +20,7 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-  background: rgba(255, 255, 255, 0.8); /* 배경 색상과 투명도 조절 */
+  background: rgba(255, 255, 255, 0.8);
   color: black;
   padding: 20px;
   border-radius: 8px;
@@ -75,9 +64,54 @@ const Button = styled.button`
 const WishFruit = () => {
   const { wishId } = useParams();
   const navigate = useNavigate();
-  
-  // 더미 데이터에서 wishId로 해당 소원 찾기
-  const wish = dummyWishes.find(w => w.wishId === parseInt(wishId, 10));
+  const [wish, setWish] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchWish = async () => {
+      try {
+        const wishData = await getWishById(wishId);
+        setWish(wishData);
+        setLoading(false);
+      } catch (error) {
+        setError('소원 정보를 가져오는 데 실패했습니다.');
+        setLoading(false);
+      }
+    };
+
+    fetchWish();
+  }, [wishId]);
+
+  const handleDelete = async () => {
+    try {
+      await deleteWishById(wishId);
+      navigate('/');
+    } catch (error) {
+      setError('소원 삭제에 실패했습니다. 나중에 다시 시도해 주세요.');
+    }
+  };
+
+  if (loading) {
+    return (
+      <Container>
+        <Content>
+          <Title>로딩 중...</Title>
+        </Content>
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container>
+        <Content>
+          <Title>{error}</Title>
+          <Button onClick={() => navigate('/')}>메인 페이지로 돌아가기</Button>
+        </Content>
+      </Container>
+    );
+  }
 
   if (!wish) {
     return (
@@ -90,21 +124,12 @@ const WishFruit = () => {
     );
   }
 
-  // 카테고리 값을 한글로 변환
-  const categoryLabel = categoryLabels[wish.category] || '기타';
-
-  const handleDelete = () => {
-    // 실제로는 API 연동을 통해 소원 삭제 처리
-    console.log(`소원 ${wishId} 삭제`);
-    navigate('/');
-  };
-
   return (
     <Container>
       <Content>
         <Title>{wish.title}</Title>
-        <Category>{categoryLabel}</Category>
-        <Text>소원 내용이 여기에 표시됩니다. (더미 데이터이므로 본문은 없음)</Text>
+        <Category>{wish.category}</Category> {/* 카테고리 값을 직접 표시 */}
+        <Text>{wish.content}</Text>
         <Button onClick={handleDelete}>소원 삭제</Button>
       </Content>
     </Container>

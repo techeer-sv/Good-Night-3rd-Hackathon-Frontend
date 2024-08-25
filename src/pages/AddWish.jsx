@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import addwishImg from '../assets/addwish.png'; // 배경 이미지
+import { addWish } from '../api/AddWishApi'; // AddWishApi에서 함수 가져오기
 
 // Styled components
 const Container = styled.div`
@@ -9,12 +10,12 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 900px; /* 컨테이너의 최대 너비를 900px로 설정 */
+  max-width: 900px;
   margin: 0 auto;
-  padding: 40px 20px; /* 위아래 패딩을 40px로 설정하고 좌우는 20px로 설정 */
-  background-image: url(${addwishImg}); /* 배경 이미지 설정 */
-  background-size: cover; /* 배경 이미지 크기 조절 */
-  background-position: center; /* 배경 이미지 위치 설정 */
+  padding: 40px 20px;
+  background-image: url(${addwishImg});
+  background-size: cover;
+  background-position: center;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
@@ -22,7 +23,7 @@ const Container = styled.div`
 const Title = styled.h2`
   margin-bottom: 20px;
   font-size: 1.5rem;
-  color: #fff; /* 배경에 맞게 텍스트 색상 변경 */
+  color: #fff;
 `;
 
 const Row = styled.div`
@@ -33,10 +34,10 @@ const Row = styled.div`
 `;
 
 const Label = styled.label`
-  width: 150px; /* 라벨의 너비를 150px로 설정 */
+  width: 150px;
   font-size: 1rem;
-  color: #fff; /* 배경에 맞게 텍스트 색상 변경 */
-  font-weight: bold; /* 글자를 굵게 설정 */
+  color: #fff;
+  font-weight: bold;
 `;
 
 const Input = styled.input`
@@ -44,8 +45,8 @@ const Input = styled.input`
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: #fff; /* 흰색 배경 */
-  color: #333; /* 텍스트 색상 */
+  background-color: #fff;
+  color: #333;
 `;
 
 const TextArea = styled.textarea`
@@ -53,9 +54,9 @@ const TextArea = styled.textarea`
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: #fff; /* 흰색 배경 */
-  color: #333; /* 텍스트 색상 */
-  height: 100px; /* 텍스트 영역의 높이를 100px로 설정 */
+  background-color: #fff;
+  color: #333;
+  height: 100px;
   resize: vertical;
 `;
 
@@ -64,8 +65,8 @@ const Select = styled.select`
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: #fff; /* 흰색 배경 */
-  color: #333; /* 텍스트 색상 */
+  background-color: #fff;
+  color: #333;
 `;
 
 const Button = styled.button`
@@ -95,20 +96,24 @@ const AddWish = () => {
   const [content, setContent] = useState('');
   const [warning, setWarning] = useState('');
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!title || !category || !content) {
       setWarning('모든 항목을 입력해야 합니다.');
       return;
     }
 
-    // API 연동 부분은 나중에 추가할 예정입니다.
-    // 예: axios.post('/api/wishes', { title, category, content });
+    try {
+      const result = await addWish(title, content, category);
+      console.log('소원 등록 성공:', result);
 
-    // 성공적으로 제출되었으면 입력값 초기화 및 경고 메시지 제거
-    setTitle('');
-    setCategory('');
-    setContent('');
-    setWarning('');
+      // 성공적으로 제출되었으면 입력값 초기화 및 경고 메시지 제거
+      setTitle('');
+      setCategory('');
+      setContent('');
+      setWarning('');
+    } catch (error) {
+      setWarning('소원 등록에 실패했습니다. 나중에 다시 시도해 주세요.');
+    }
   };
 
   return (
@@ -135,13 +140,13 @@ const AddWish = () => {
           onChange={(e) => setCategory(e.target.value)}
         >
           <option value="">선택하세요</option>
-          <option value="CAREER">진로</option>
-          <option value="HEALTH">건강</option>
-          <option value="RELATIONSHIP">인간관계</option>
-          <option value="MONEY">돈</option>
-          <option value="GOALS">목표</option>
-          <option value="STUDY">학업/성적</option>
-          <option value="OTHERS">기타</option>
+          <option value="진로">진로</option>
+          <option value="건강">건강</option>
+          <option value="인간 관계">인간 관계</option>
+          <option value="돈">돈</option>
+          <option value="목표">목표</option>
+          <option value="학업/성적">학업/성적</option>
+          <option value="기타">기타</option>
         </Select>
       </Row>
 

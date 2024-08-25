@@ -145,7 +145,7 @@ const WishTree = () => {
         <option value="">전체 카테고리</option>
         <option value="CAREER">진로</option>
         <option value="HEALTH">건강</option>
-        <option value="RELATIONSHIP">인간관계</option>
+        <option value="RELATIONSHIP">인간 관계</option>
         <option value="MONEY">돈</option>
         <option value="GOALS">목표</option>
         <option value="STUDY">학업/성적</option>

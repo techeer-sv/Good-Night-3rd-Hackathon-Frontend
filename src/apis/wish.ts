@@ -28,3 +28,21 @@ export const getWishList = async (category?: string, is_confirmed?: string) => {
 		return error;
 	}
 };
+
+export const getWishDetail = async (id: number) => {
+	try {
+		const response = await axiosInstance.get(`/wishes/${id}`);
+		return response.data;
+	} catch (error) {
+		return error;
+	}
+};
+
+export const deleteWish = async (id: number) => {
+	try {
+		const response = await axiosInstance.delete(`/wishes/${id}`);
+		return response.data;
+	} catch (error) {
+		return error;
+	}
+};

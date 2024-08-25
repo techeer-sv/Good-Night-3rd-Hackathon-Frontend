@@ -4,7 +4,6 @@
 	import { onMount } from 'svelte';
 	import { fruit } from '$utils/imageURL';
 	import type { wishListType } from '$types/wish';
-	import { goto } from '$app/navigation';
 
 	let wishList: wishListType[] = [];
 	let category: string = '';

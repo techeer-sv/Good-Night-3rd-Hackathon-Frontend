@@ -4,15 +4,20 @@ import Header from '../Header';
 
 import fruitBg from '../../asset/FruitBg.svg';
 import RoleSwitcher from '../RoleSwitcher';
-import { useParams } from 'react-router-dom';
-import { getWishById } from '../../service/fruitWish';
+import { useNavigate, useParams } from 'react-router-dom';
+import { deleteWishById, getWishById } from '../../service/fruitWish';
 import { Wish } from '../../service/getWishes';
+import { useUserContext } from '../../context/UserContext';
 
 const WishFruit: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [wish, setWish] = useState<Wish | null>(null);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const { role } = useUserContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // fetchWish 호출
@@ -39,6 +44,24 @@ const WishFruit: React.FC = () => {
     fetchWish();
   }, [id]);
 
+  const handleDelete = async () => {
+    if (!id || isNaN(Number(id))) return;
+
+    setDeleting(true);
+    try {
+      await deleteWishById(Number(id));
+      alert('소원이 삭제되었습니다.');
+      // 삭제 후 네비게이션 또는 다른 페이지로 리디렉션
+    } catch (err) {
+      setError('소원 삭제에 실패했습니다.');
+      console.error('Error deleting wish:', err);
+    } finally {
+      setDeleting(false);
+    }
+
+    navigate('/');
+  };
+
   if (!wish) {
     return <div>No wish found</div>;
   }
@@ -59,6 +82,15 @@ const WishFruit: React.FC = () => {
           <h1 className="text-4xl font-extrabold mb-8">{wish.title}</h1>
           <p className="text-md text-gray-500 mb-8">{wish.category}</p>
           <p className="text-3xl">{wish.content}</p>
+          {role === 'Admin' && ( // 관리자일 때만 삭제 버튼 표시
+            <button
+              onClick={handleDelete}
+              disabled={deleting}
+              className="mt-4 px-4 py-2 bg-red-600 text-white rounded"
+            >
+              {deleting ? 'Deleting...' : 'Delete'}
+            </button>
+          )}
         </div>
       </div>
       <RoleSwitcher />

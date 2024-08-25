@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import TopBar from '../components/TopBar';
 import tree from '../assets/tree.svg';
 import fruit from '../assets/fruit.svg';
+import Switch from '../components/ToggleSwitch';
 
 interface Wish {
   id: number;
@@ -12,7 +13,12 @@ interface Wish {
 
 const WishListPage: React.FC = () => {
   const [wishes, setWishes] = useState<Wish[]>([]);
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const [isAdmin, setIsAdmin] = useState<boolean>(() => {
+    const savedRole = localStorage.getItem('isAdmin');
+    return savedRole === 'true';
+  });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchWishes();
@@ -32,7 +38,15 @@ const WishListPage: React.FC = () => {
   };
 
   const handleWishClick = (wishId: number) => {
-    navigate(`/wish/${wishId}`); // 클릭된 소원의 ID로 상세 페이지로 이동
+    navigate(`/wish/${wishId}`);
+  };
+
+  const toggleRole = () => {
+    setIsAdmin((prevRole) => {
+      const newRole = !prevRole;
+      localStorage.setItem('isAdmin', newRole.toString());
+      return newRole;
+    });
   };
 
   return (
@@ -63,6 +77,13 @@ const WishListPage: React.FC = () => {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="absolute bottom-4 right-4 flex items-center gap-2">
+        <label htmlFor="Role" className="text-black ml-2">
+          {isAdmin ? 'Admin' : 'User'}
+        </label>
+        <Switch id="Role" onCheckedChange={toggleRole}></Switch>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 export const getWishes = async (confirm: string) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/wishes?isConfirm=${confirm}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/wishes?isConfirmed=${confirm}`,
       {
         method: 'GET',
         headers: {

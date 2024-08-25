@@ -1,32 +1,32 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {},
   },
   plugins: [
     function ({ addUtilities }) {
       addUtilities({
-        ".scrollbar-hide": {
-          "scrollbar-width": "none",
-          "&::-webkit-scrollbar": {
-            display: "none",
+        '.scrollbar-hide': {
+          'scrollbar-width': 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
           },
         },
-        ".scrollbar-custom": {
-          "&::-webkit-scrollbar": {
-            width: "5px",
-            height: "5px",
+        '.scrollbar-custom': {
+          '&::-webkit-scrollbar': {
+            width: '5px',
+            height: '5px',
           },
-          "&::-webkit-scrollbar-track": {
-            background: "#f1f1f1",
+          '&::-webkit-scrollbar-track': {
+            background: '#f1f1f1',
           },
-          "&::-webkit-scrollbar-thumb": {
-            background: "#888",
-            borderRadius: "6px",
+          '&::-webkit-scrollbar-thumb': {
+            background: '#888',
+            borderRadius: '6px',
           },
-          "&::-webkit-scrollbar-thumb:hover": {
-            background: "#555",
+          '&::-webkit-scrollbar-thumb:hover': {
+            background: '#555',
           },
         },
       });

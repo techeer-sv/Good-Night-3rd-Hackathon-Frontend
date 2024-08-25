@@ -51,7 +51,7 @@ const Navbar = () => {
     <NavbarContainer>
       <Logo onClick={() => navigate("/")}>TeCheer Tree</Logo> {/* 로고 클릭 시 홈으로 이동 */}
       <NavLinks>
-        <NavLink href="#home">소원 열매 달기</NavLink>
+        <NavLink href="/wish">소원 열매 달기</NavLink>
       </NavLinks>
     </NavbarContainer>
   );

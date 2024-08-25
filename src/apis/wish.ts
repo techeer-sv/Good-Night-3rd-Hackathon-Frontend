@@ -46,3 +46,15 @@ export const deleteWish = async (id: number) => {
 		return error;
 	}
 };
+
+export const updateApprovalWish = async (id: number, is_confirmed: boolean) => {
+	try {
+		// 쿼리 파라미터로 is_confirmed 값을 전달
+		const response = await axiosInstance.patch(`/wishes/${id}`, null, {
+			params: { is_confirmed }
+		});
+		return response.data;
+	} catch (error) {
+		return error;
+	}
+};

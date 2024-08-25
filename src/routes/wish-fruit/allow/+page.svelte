@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { getWishList } from '$apis/wish';
+	import { getWishList, updateApprovalWish } from '$apis/wish';
 	import { approveIcon, rejectIcon } from '$utils/imageURL';
 	import type { wishListType } from '$types/wish';
 
@@ -35,10 +35,29 @@
 			{#each wishList as wish}
 				<div class="wish-item">
 					<div class="wish-item-title">{wish.title}</div>
-					<button class="approval-control-button">
+					<button
+						class="approval-control-button"
+						on:click={() => {
+							updateApprovalWish(wish.id, true).then((res) => {
+								if (res.status === 200) {
+									console.log(res);
+									location.reload();
+								} else {
+									console.error(wish.id, res);
+								}
+							});
+						}}
+					>
 						<img src={approveIcon} alt="approve" />
 					</button>
-					<button class="approval-control-button">
+					<button
+						class="approval-control-button"
+						on:click={() => {
+							updateApprovalWish(wish.id, false).then(() => {
+								location.reload();
+							});
+						}}
+					>
 						<img src={rejectIcon} alt="reject" />
 					</button>
 				</div>

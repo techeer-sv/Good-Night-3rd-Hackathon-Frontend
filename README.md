@@ -118,11 +118,11 @@ Techeer Tree는 테커인들이 자신의 목표나 소원을 작성하고, 이�
 - 👨🏻‍💻[정태원](https://github.com/teawon)
 - 🧑🏻‍💻[오현택](https://github.com/HyunTaek5)
 
-추가기능 제외 기본기능 모두 구현 완료하였습니다.
-사용한 라이브러리는 다음과 같습니다.
-React
-Vite
-Styled-Components
-Eslint
-Prettier
-Axios
+추가기능 제외 기본기능 모두 구현 완료하였습니다.<br/>
+사용한 라이브러리는 다음과 같습니다.<br/>
+React<br/>
+Vite<br/>
+Styled-Components<br/>
+Eslint<br/>
+Prettier<br/>
+Axios<br/>

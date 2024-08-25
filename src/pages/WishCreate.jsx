@@ -64,7 +64,7 @@ const SubmitButton = styled.button`
 
 function WishCreate() {
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("진로");
+  const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate(); // useNavigate 훅 사용
 
@@ -99,6 +99,9 @@ function WishCreate() {
 
         <Label>소원 카테고리</Label>
         <Select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <option value="" disabled selected>
+            카테고리를 선택하세요
+          </option>
           <option value="진로">진로</option>
           <option value="건강">건강</option>
           <option value="인간 관계">인간 관계</option>

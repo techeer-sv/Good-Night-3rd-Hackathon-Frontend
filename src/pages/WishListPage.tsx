@@ -21,7 +21,7 @@ const WishListPage: React.FC = () => {
   const fetchWishes = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/wishes?confirm=PENDING&page=0&size=9999999999999`,
+        `http://localhost:8080/wishes?page=0&size=9999`,
       );
       const data = await response.json();
       const wishesArray = data.data.content;

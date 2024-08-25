@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TopBar from '../components/TopBar';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,7 +6,18 @@ const WishEnrollPage: React.FC = () => {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('진로');
   const [content, setContent] = useState('');
+  const [isAdmin, setIsAdmin] = useState<boolean>(() => {
+    // 로컬 스토리지에서 저장된 권한 상태를 읽어옴
+    const savedRole = localStorage.getItem('isAdmin');
+    return savedRole === 'true';
+  });
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // 로컬 스토리지에 권한 상태 저장
+    localStorage.setItem('isAdmin', isAdmin.toString());
+  }, [isAdmin]);
 
   const handleSubmit = async () => {
     // 카테고리 값 변환 (필요에 따라 추가 카테고리 매핑 가능)
@@ -72,10 +83,9 @@ const WishEnrollPage: React.FC = () => {
             >
               <option value="진로">진로</option>
               <option value="건강">건강</option>
-              <option value="학업">관계</option>
-              <option value="학업">금전</option>
-              <option value="학업">목표</option>
-              {/* 추가 카테고리는 여기에 추가 */}
+              <option value="관계">관계</option>
+              <option value="금전">금전</option>
+              <option value="목표">목표</option>
             </select>
           </div>
           <div className="mb-6">

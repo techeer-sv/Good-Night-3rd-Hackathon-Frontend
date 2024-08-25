@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import TopBar from '../components/TopBar';
 import flower from '../assets/flower.svg'; // SVG 배경 이미지 파일
 
@@ -12,6 +12,11 @@ interface WishDetail {
 const WishDetailPage: React.FC = () => {
   const { wishId } = useParams<{ wishId: string }>();
   const [wishDetail, setWishDetail] = useState<WishDetail | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(() => {
+    const savedRole = localStorage.getItem('isAdmin');
+    return savedRole === 'true';
+  });
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (wishId) {
@@ -26,6 +31,23 @@ const WishDetailPage: React.FC = () => {
       setWishDetail(data.data);
     } catch (error) {
       console.error('Error fetching wish detail:', error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/wishes/${wishId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        console.log('소원 삭제 성공');
+        navigate('/'); // 삭제 후 목록 페이지로 이동
+      } else {
+        console.error('소원 삭제 실패:', response.statusText);
+      }
+    } catch (error) {
+      console.error('소원 삭제 중 오류 발생:', error);
     }
   };
 
@@ -55,6 +77,16 @@ const WishDetailPage: React.FC = () => {
           </h1>
           <p className="text-xl text-gray-700 mb-2">{wishDetail.category}</p>
           <p className="text-lg text-gray-600">{wishDetail.content}</p>
+
+          {/* 삭제 버튼 (Admin 권한일 때만 보임) */}
+          {isAdmin && (
+            <button
+              onClick={handleDelete}
+              className="mt-6 bg-red-500 text-white px-6 py-3 rounded-full shadow"
+            >
+              소원 삭제
+            </button>
+          )}
         </div>
       </div>
     </div>

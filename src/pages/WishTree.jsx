@@ -1,6 +1,8 @@
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { tree, fruit } from "../assets/image";
+import { fetchWishesByCategory } from "../apis/wishes";
 
 const TreeContainer = styled.div`
   position: relative;
@@ -67,45 +69,79 @@ const WishText = styled.p`
 `;
 
 const App = () => {
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate();
+  const [wishes, setWishes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [category, setCategory] = useState("전체");
+  const [page, setPage] = useState(0);
+  const [size] = useState(9);
 
-  const handleWishClick = () => {
-    navigate("/detail"); // 소원을 클릭하면 /detail 페이지로 이동
+  useEffect(() => {
+    const loadWishes = async () => {
+      try {
+        const data = await fetchWishesByCategory(category, page, size);
+        setWishes(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err);
+        setLoading(false);
+      }
+    };
+
+    loadWishes();
+  }, [category, page, size]);
+
+  const handleWishClick = (id) => {
+    navigate(`/detail/${id}`);
   };
-  const wishes = [
-    "취업 잘 되게 해 주세요",
-    "여자친구 기원",
-    "로또 1등 당첨!",
-    "우리 가족 만수무강~",
-    "부트캠프 1등하게 해 주세요...",
-    "내일 수술 잘 마치길...",
-    "9만전자 가자~!",
-    "학점 4.2점 넘게 해 주세요",
-    "우크라이나 전쟁 끝나게 해 주세요",
-  ];
+
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+    setPage(0);
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <TreeContainer>
       <TreeImage src={tree} alt="Tree" />
       <OverlayContainer>
-        <Dropdown>
-          <option>전체</option>
-          <option>진로</option>
-          <option>건강</option>
-          <option>인간 관계</option>
-          <option>돈</option>
-          <option>목표</option>
-          <option>학업/성적</option>
-          <option>기타</option>
+        <Dropdown value={category} onChange={handleCategoryChange}>
+          <option value="전체">전체</option>
+          <option value="진로">진로</option>
+          <option value="건강">건강</option>
+          <option value="인간 관계">인간 관계</option>
+          <option value="돈">돈</option>
+          <option value="목표">목표</option>
+          <option value="학업/성적">학업/성적</option>
+          <option value="기타">기타</option>
         </Dropdown>
         <WishContainer>
-          {wishes.map((wish, index) => (
-            <WishItem key={index} onClick={handleWishClick}>
-              <FruitImage src={fruit} alt="Fruit" />
-              <WishText>{wish}</WishText>
-            </WishItem>
-          ))}
+          {Array.isArray(wishes) && wishes.length > 0 ? (
+            wishes.map((wish, index) => (
+              <WishItem key={index} onClick={() => handleWishClick(wish.id)}>
+                <FruitImage src={fruit} alt="Fruit" />
+                <WishText>{wish.title}</WishText>
+              </WishItem>
+            ))
+          ) : (
+            <div>No wishes found.</div>
+          )}
         </WishContainer>
+        <div>
+          <button onClick={() => setPage(page - 1)} disabled={page === 0}>
+            Previous
+          </button>
+          <span> Page {page + 1} </span>
+          <button
+            onClick={() => setPage(page + 1)}
+            disabled={wishes.length < size} // 다음 페이지로 갈 수 없으면 버튼 비활성화
+          >
+            Next
+          </button>
+        </div>
       </OverlayContainer>
     </TreeContainer>
   );

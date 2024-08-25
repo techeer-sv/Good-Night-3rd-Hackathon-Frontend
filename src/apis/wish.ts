@@ -9,7 +9,7 @@ export const postWish = async (title: string, category: string, content: string)
 	}
 };
 
-export const getWishList = async (category?: string, is_confirmed?: string) => {
+export const getWishList = async (category?: string, is_confirmed?: string | null) => {
 	try {
 		const params: { category?: string; is_confirmed?: string } = {};
 

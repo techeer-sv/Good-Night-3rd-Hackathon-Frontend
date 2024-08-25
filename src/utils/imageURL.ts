@@ -7,3 +7,7 @@ export const adminPermission = 'https://i.ibb.co/RPT6VjS/adminP.png';
 export const tree = 'https://i.ibb.co/db8gykk/free-icon-tree-10284860.png';
 
 export const deleteIcon = 'https://i.ibb.co/QNYtH1G/image.png';
+
+export const approveIcon = 'https://i.ibb.co/TLwdsvC/free-icon-font-checkbox.png';
+
+export const rejectIcon = 'https://i.ibb.co/kJCTThj/free-icon-font-square-x.png';

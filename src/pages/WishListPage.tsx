@@ -13,6 +13,7 @@ interface Wish {
 
 const WishListPage: React.FC = () => {
   const [wishes, setWishes] = useState<Wish[]>([]);
+  const [confirmStatus, setConfirmStatus] = useState<string>('전체');
   const [isAdmin, setIsAdmin] = useState<boolean>(() => {
     const savedRole = localStorage.getItem('isAdmin');
     return savedRole === 'true';
@@ -22,13 +23,17 @@ const WishListPage: React.FC = () => {
 
   useEffect(() => {
     fetchWishes();
-  }, []);
+  }, [confirmStatus]); // confirmStatus가 변경될 때마다 소원 목록을 가져옴
 
   const fetchWishes = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/wishes?page=0&size=9999`,
-      );
+      let url = `http://localhost:8080/wishes?page=0&size=9999`;
+
+      if (confirmStatus !== '전체') {
+        url = `http://localhost:8080/wishes?confirm=${confirmStatus}&page=0&size=9999`;
+      }
+
+      const response = await fetch(url);
       const data = await response.json();
       const wishesArray = data.data.content;
       setWishes(wishesArray);
@@ -49,10 +54,14 @@ const WishListPage: React.FC = () => {
     });
   };
 
+  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setConfirmStatus(event.target.value);
+  };
+
   return (
     <div className="min-h-screen bg-green-50 flex flex-col items-center w-full relative">
       <TopBar />
-      <div className="flex-grow w-full flex justify-center items-center relative">
+      <div className="flex-grow w-full flex flex-col items-center relative">
         <img
           src={tree}
           alt="Tree"
@@ -63,7 +72,21 @@ const WishListPage: React.FC = () => {
             transform: 'translate(-50%, -50%)',
           }}
         />
-        <div className="relative z-10 w-full h-full grid grid-cols-3 gap-6 pt-20">
+        {/* Confirm 상태 선택 드롭다운 */}
+        <div className="relative z-10 w-full max-w-3xl mb-4">
+          <select
+            className="bg-white text-black py-2 px-4 rounded-md w-full"
+            value={confirmStatus}
+            onChange={handleStatusChange}
+          >
+            <option value="전체">전체</option>
+            <option value="PENDING">PENDING</option>
+            <option value="APPROVED">APPROVED</option>
+            <option value="REJECTED">REJECTED</option>
+          </select>
+        </div>
+
+        <div className="relative z-10 w-full h-full grid grid-cols-3 gap-6">
           {wishes.map((wish) => (
             <div
               key={wish.id}

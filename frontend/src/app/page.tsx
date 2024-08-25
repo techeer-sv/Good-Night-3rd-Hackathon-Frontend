@@ -9,7 +9,7 @@ export default function WishTree() {
         <header className="bg-white shadow-lg rounded-lg px-8 py-4 text-4xl font-bold text-yellow-600">
           Techeer Tree
         </header>
-        <div className="w-full flex items-center justify-center">
+        <div className="w-full flex items-center justify-center h-fit">
           <WishSection />
         </div>
       </div>

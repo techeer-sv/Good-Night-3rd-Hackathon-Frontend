@@ -1,25 +1,57 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import WishFruit from '@/app/_component/WishFruit';
 import { getWishes } from '@/app/_lib/getWishes';
 import { Wish } from '@/model/Wish';
 
 export default function WishSection() {
   const [category, setCategory] = useState<string>(''); // 선택된 카테고리를 저장할 상태
-  const [approveWishes, setApproveWishes] = useState<Wish[]>([]);
+  const [wishes, setWishes] = useState<Wish[]>([]); // 소원 목록
+  const [page, setPage] = useState<number>(1); // 현재 페이지
+  const [isLoading, setIsLoading] = useState<boolean>(false); // 데이터 로딩 상태
+  const [hasMore, setHasMore] = useState<boolean>(true); // 추가 데이터 여부
 
-  // 카테고리 또는 컴포넌트가 처음 렌더링될 때 소원을 가져옴
+  const observerRef = useRef<IntersectionObserver | null>(null); // IntersectionObserver 참조
+
+  // 무한 스크롤을 위한 마지막 요소 감지
+  const lastWishElementRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     const fetchWishes = async () => {
-      const wishes = await getWishes('true', category);
-      if (wishes) {
-        setApproveWishes(wishes);
+      setIsLoading(true);
+      const newWishes = await getWishes('true', category, page.toString(), '3');
+      if (newWishes) {
+        setWishes((prevWishes: Wish[]) => [...prevWishes, ...newWishes]);
+        setHasMore(newWishes.length > 0); // 더 가져올 데이터가 있는지 확인
       }
+      setIsLoading(false);
     };
 
     fetchWishes();
-  }, [category]); // 카테고리가 변경될 때마다 소원을 다시 가져옴
+  }, [category, page]);
+
+  useEffect(() => {
+    // 카테고리가 변경될 때 페이지와 소원 목록 초기화
+    setPage(1);
+    setWishes([]);
+    setHasMore(true);
+  }, [category]);
+
+  useEffect(() => {
+    // 새로운 IntersectionObserver를 생성하여 마지막 요소를 감지
+    if (observerRef.current) observerRef.current.disconnect();
+
+    observerRef.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && hasMore && !isLoading) {
+        setPage((prevPage) => prevPage + 1); // 페이지 증가
+      }
+    });
+
+    if (lastWishElementRef.current) {
+      observerRef.current.observe(lastWishElementRef.current);
+    }
+  }, [hasMore, isLoading]);
 
   return (
     <div className="w-full">
@@ -48,9 +80,15 @@ export default function WishSection() {
         </select>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        {approveWishes.map((wish: Wish) => (
-          <WishFruit key={wish.id} wish={wish} />
+      <div className="grid grid-cols-3 gap-4 overflow-y-scroll h-[60vh]">
+        {wishes.map((wish, index) => (
+          <div
+            key={wish.id}
+            ref={index === wishes.length - 1 ? lastWishElementRef : null}
+            className="flex flex-col justify-between min-h-[calc(60vh/3-1rem)]"
+          >
+            <WishFruit wish={wish} />
+          </div>
         ))}
       </div>
     </div>

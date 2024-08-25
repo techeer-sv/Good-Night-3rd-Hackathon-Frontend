@@ -1,4 +1,9 @@
-export const getWishes = async (confirm?: string, category?: string) => {
+export const getWishes = async (
+  confirm?: string,
+  category?: string,
+  page?: string,
+  limit?: string,
+) => {
   try {
     // 파라미터가 존재하지 않을 경우 무시하도록 함
     const params = new URLSearchParams();
@@ -7,6 +12,12 @@ export const getWishes = async (confirm?: string, category?: string) => {
     }
     if (category) {
       params.append('category', category);
+    }
+    if (page) {
+      params.append('page', page);
+    }
+    if (limit) {
+      params.append('limit', limit);
     }
 
     const response = await fetch(

@@ -1,0 +1,33 @@
+/* styles/components/Navbar.css */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #f57c00;
+    /* 칠성구 주황색 */
+    color: #ffffff;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* 약간의 그림자 추가 */
+}
+
+.navbar div {
+    font-weight: bold;
+    font-size: 1.5rem;
+    /* 더 두드러지게 */
+}
+
+.navbar a {
+    color: #e53935;
+    /* 칠성구 빨간색 */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2rem;
+    /* 폰트 크기 통일 */
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}

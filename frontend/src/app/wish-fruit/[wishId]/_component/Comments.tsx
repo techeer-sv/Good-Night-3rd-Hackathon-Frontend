@@ -5,13 +5,7 @@ import getComments from '@/app/wish-fruit/[wishId]/_lib/getComments';
 import postComment from '@/app/wish-fruit/[wishId]/_lib/postComment';
 import { useAuth } from '@/app/_component/AuthContext';
 import deleteComment from '@/app/wish-fruit/[wishId]/_lib/deleteComment';
-
-type Comment = {
-  id: string;
-  content: string;
-  createdAt: Date;
-  deletedAt: Date | null;
-};
+import { Comment } from '@/model/Comment';
 
 type CommentsProps = {
   wishId: string;
@@ -71,7 +65,7 @@ export default function Comments({ wishId }: CommentsProps) {
         </button>
       </div>
       <ul className="mt-4">
-        {comments.map((comment) => (
+        {comments.map((comment: Comment) => (
           <li
             key={comment.id}
             className="border-b border-gray-300 py-2 flex flex-row justify-between"

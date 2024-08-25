@@ -3,6 +3,7 @@ import Header from '../Header';
 
 import okay from '../../asset/Okay.svg';
 import no from '../../asset/No.svg';
+import RoleSwitcher from '../RoleSwitcher';
 
 const AllowPage: React.FC = () => {
   const wishTitles = [
@@ -40,6 +41,7 @@ const AllowPage: React.FC = () => {
           ))}
         </div>
       </div>
+      <RoleSwitcher />
     </div>
   );
 };

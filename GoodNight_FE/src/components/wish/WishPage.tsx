@@ -1,6 +1,7 @@
 //소원 열매 달기 페이지(소원 등록)
 import React, { useState } from 'react';
 import Header from '../Header';
+import RoleSwitcher from '../RoleSwitcher';
 
 const categories = [
   '진로',
@@ -15,11 +16,11 @@ const categories = [
 const WishPage: React.FC = () => {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
-  const [description, setDescription] = useState('');
+  const [content, setContent] = useState('');
   const [errors, setErrors] = useState<{
     title?: string;
     category?: string;
-    description?: string;
+    content?: string;
   }>({});
   // const navigate = useNavigate();
 
@@ -40,7 +41,7 @@ const WishPage: React.FC = () => {
       newErrors.category = '소원 카테고리를 선택해주세요.';
       hasError = true;
     }
-    if (!description) {
+    if (!content) {
       newErrors.description = '소원 본문을 입력해주세요.';
       hasError = true;
     }
@@ -112,13 +113,13 @@ const WishPage: React.FC = () => {
             <textarea
               id="description"
               rows={4}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
               className="mt-2 block w-full px-3 py-20 border border-gray-300 rounded-md shadow-sm focus:outline-none sm:text-sm"
               required
             />
-            {errors.description && (
-              <p className="text-red-500 text-sm mt-1">{errors.description}</p>
+            {errors.content && (
+              <p className="text-red-500 text-sm mt-1">{errors.content}</p>
             )}
           </div>
           <button
@@ -129,6 +130,7 @@ const WishPage: React.FC = () => {
           </button>
         </form>
       </div>
+      <RoleSwitcher />
     </div>
   );
 };

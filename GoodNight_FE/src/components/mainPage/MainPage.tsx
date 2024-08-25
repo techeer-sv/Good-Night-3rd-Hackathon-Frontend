@@ -4,6 +4,7 @@ import Header from '../Header';
 import treeBg from '../../asset/TreeBg.svg';
 import fruit from '../../asset/Fruit.svg';
 import arrowDown from '../../asset/Down.svg';
+import RoleSwitcher from '../RoleSwitcher';
 
 const MainPage: React.FC = () => {
   const [Dropdwon, setDropdown] = useState(false);
@@ -69,6 +70,7 @@ const MainPage: React.FC = () => {
           </div>
         </div>
       </div>
+      <RoleSwitcher />
     </div>
   );
 };

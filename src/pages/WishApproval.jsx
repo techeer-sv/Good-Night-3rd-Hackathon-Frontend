@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { fetchPendingWishes, approveWish, rejectWish } from '../api/WishApprovalApi';
 
 // 소원 상태에 따른 색상 매핑
 const statusColors = {
@@ -78,48 +78,49 @@ const Button = styled.button`
   }
 `;
 
-// 더미 데이터
-const dummyWishes = [
-  { wishId: '1', title: '내일 날씨가 맑기를', status: 'PENDING' },
-  { wishId: '2', title: '다음 시험에서 좋은 성적을 받기를', status: 'PENDING' },
-  { wishId: '3', title: '새로운 친구를 사귀기를', status: 'APPROVED' },
-  { wishId: '4', title: '건강하게 지내기를', status: 'REJECTED' },
-];
-
 // 스타일이 적용된 메시지 컴포넌트
 const NoPendingWishesMessage = styled.p`
-  color: black; /* 글자 색상을 검정색으로 설정 */
-  font-size: 1rem; /* 글자 크기를 설정 (필요에 따라 조정 가능) */
+  color: black;
+  font-size: 1rem;
 `;
 
 const WishApproval = () => {
   const [pendingWishes, setPendingWishes] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    // 보류 상태인 소원만 필터링하여 상태를 설정합니다.
-    const fetchPendingWishes = () => {
-      const filteredWishes = dummyWishes.filter(wish => wish.status === 'PENDING');
-      setPendingWishes(filteredWishes);
+    const loadPendingWishes = async () => {
+      try {
+        const wishes = await fetchPendingWishes();
+        setPendingWishes(wishes);
+        console.log(wishes);
+      } catch (error) {
+        console.error('Failed to fetch pending wishes', error);
+      }
     };
 
-    fetchPendingWishes();
+    loadPendingWishes();
   }, []);
 
-  const handleApproval = (wishId) => {
-    setPendingWishes(prevWishes =>
-      prevWishes.map(wish =>
-        wish.wishId === wishId ? { ...wish, status: 'APPROVED' } : wish
-      )
-    );
+  const handleApproval = async (wishId) => {
+    try {
+      await approveWish(wishId);
+      setPendingWishes(prevWishes =>
+        prevWishes.filter(wish => wish.wishId !== wishId)
+      );
+    } catch (error) {
+      console.error('Failed to approve wish', error);
+    }
   };
 
-  const handleRejection = (wishId) => {
-    setPendingWishes(prevWishes =>
-      prevWishes.map(wish =>
-        wish.wishId === wishId ? { ...wish, status: 'REJECTED' } : wish
-      )
-    );
+  const handleRejection = async (wishId) => {
+    try {
+      await rejectWish(wishId);
+      setPendingWishes(prevWishes =>
+        prevWishes.filter(wish => wish.wishId !== wishId)
+      );
+    } catch (error) {
+      console.error('Failed to reject wish', error);
+    }
   };
 
   return (

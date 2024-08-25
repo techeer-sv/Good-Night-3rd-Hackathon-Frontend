@@ -2,56 +2,64 @@
 import React, { useState } from 'react';
 import Header from '../Header';
 import RoleSwitcher from '../RoleSwitcher';
+import { createWish } from '../../service/wish';
+import { useNavigate } from 'react-router-dom';
 
 const categories = [
-  '진로',
-  '건강',
-  '인간 관계',
-  '돈',
-  '목표',
-  '학업/성적',
-  '기타',
+  'CAREER',
+  'HEALTH',
+  'RELATIONSHIPS',
+  'MONEY',
+  'GOALS',
+  'ACADEMICS',
+  'OTHERS',
 ];
 
 const WishPage: React.FC = () => {
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('CAREER');
   const [content, setContent] = useState('');
   const [errors, setErrors] = useState<{
     title?: string;
     category?: string;
     content?: string;
   }>({});
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    let hasError = false;
-    const newErrors: {
-      title?: string;
-      category?: string;
-      description?: string;
-    } = {};
 
+    // 입력 검증
     if (!title) {
-      newErrors.title = '소원 제목을 입력해주세요.';
-      hasError = true;
+      setErrors((prev) => ({ ...prev, title: '소원 제목을 입력해주세요.' }));
+      return;
     }
     if (!category) {
-      newErrors.category = '소원 카테고리를 선택해주세요.';
-      hasError = true;
+      setErrors((prev) => ({ ...prev, category: '카테고리를 선택해주세요.' }));
+      return;
     }
     if (!content) {
-      newErrors.description = '소원 본문을 입력해주세요.';
-      hasError = true;
-    }
-
-    if (hasError) {
-      setErrors(newErrors);
+      setErrors((prev) => ({ ...prev, content: '소원 본문을 입력해주세요.' }));
       return;
     }
 
-    //navigate 추가할 것
+    const wishData = {
+      title,
+      category,
+      content,
+    };
+
+    try {
+      const result = await createWish(wishData);
+      if (result) {
+        alert('소원이 성공적으로 생성되었습니다!');
+        navigate('/');
+      } else {
+        alert('소원 생성에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('소원 생성 요청 실패:', error);
+    }
   };
 
   return (
@@ -67,8 +75,8 @@ const WishPage: React.FC = () => {
               소원 제목
             </label>
             <input
-              id="title"
               type="text"
+              id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="mt-2 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"

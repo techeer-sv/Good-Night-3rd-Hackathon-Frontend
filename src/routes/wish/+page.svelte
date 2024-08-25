@@ -6,7 +6,7 @@
 	let permissions: string;
 
 	let subject: string = '';
-	let selectedCategory: string = '';
+	let category: string = '';
 	let content: string = '';
 
 	onMount(() => {
@@ -19,11 +19,11 @@
 			return;
 		}
 
-		if (!subject || !selectedCategory || !content) {
+		if (!subject || !category || !content) {
 			alert('소원 제목, 카테고리, 내용을 모두 입력해주세요.');
 			return;
 		} else {
-			postWish(subject, selectedCategory, content).then((res) => {
+			postWish(subject, category, content).then((res) => {
 				console.log(res);
 				alert('소원 열매를 달았습니다.');
 				goto(`/wish-fruit/${res?.id}`, { replaceState: true });
@@ -44,7 +44,7 @@
 
 		<div class="post">
 			<div class="title">소원 카테고리</div>
-			<select bind:value={selectedCategory} class="category-select">
+			<select bind:value={category} class="category-select">
 				<option value="" disabled selected>카테고리를 선택하세요</option>
 				<option value="진로">진로</option>
 				<option value="건강">건강</option>

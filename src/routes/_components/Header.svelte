@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { logo } from '../../utils/imageURL';
+	import { fruit } from '../../utils/imageURL';
 	let permissions: string;
 	let targetUrl: string;
 
@@ -35,7 +35,7 @@
 			on:click={() => goto('/')}
 			on:keydown={(event) => handleKeyDown(event, '/')}
 		>
-			<img src={logo} alt="Techeer Tree" />
+			<img src={fruit} alt="Techeer Tree" />
 			Techeer Tree
 		</button>
 		<button

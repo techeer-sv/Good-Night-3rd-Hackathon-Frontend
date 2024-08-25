@@ -1,7 +1,7 @@
-export const getPendingWishes = async () => {
+export const getWishes = async (confirm: string) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/wishes?isConfirmed=pending`,
+      `${process.env.NEXT_PUBLIC_API_URL}/wishes?isConfirm=${confirm}`,
       {
         method: 'GET',
         headers: {
@@ -11,7 +11,7 @@ export const getPendingWishes = async () => {
     );
 
     if (!response.ok) {
-      throw new Error('보류 중인 소원 조회 실패');
+      throw new Error('전제 소원 조회 실패');
     }
 
     const data = await response.json();

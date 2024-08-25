@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
 import AllowWishes from '@/app/wish-fruit/allow/_component/AllowWishes';
-import { getPendingWishes } from '@/app/wish-fruit/allow/_lib/getPendingWishes';
+import { getWishes } from '@/app/_lib/getWishes';
 
 export default async function Allow() {
-  const pendingWishes = await getPendingWishes();
+  const pendingWishes = await getWishes('pending');
 
   return (
     <div className="min-h-screen bg-yellow-50 p-6 flex flex-col">

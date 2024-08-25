@@ -6,6 +6,7 @@ import fruit from '../../asset/Fruit.svg';
 import arrowDown from '../../asset/Down.svg';
 import RoleSwitcher from '../RoleSwitcher';
 import { getWishes, Wish } from '../../service/getWishes';
+import { useNavigate } from 'react-router-dom';
 
 const MainPage: React.FC = () => {
   const [Dropdwon, setDropdown] = useState(false);
@@ -52,6 +53,14 @@ const MainPage: React.FC = () => {
   if (error) {
     return <div>{error}</div>;
   }
+
+  const navigate = useNavigate();
+
+  const handleNaviage = (id: number) => {
+    if (id) {
+      navigate(`/wish-fruit/${id}`);
+    }
+  };
 
   return (
     <div className="flex flex-col w-full h-screen">
@@ -118,6 +127,7 @@ const MainPage: React.FC = () => {
                     src={fruit}
                     alt={`Fruit ${index + 1}`}
                     className="w-50 h-50"
+                    onClick={() => handleNaviage(wish?.id)}
                   />
                   <span className="mt-5 text-lg text-extrabold">
                     {wish.title}

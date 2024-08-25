@@ -1,14 +1,48 @@
 // 소원 열매 페이지(소원 상세 페이지)
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../Header';
 
 import fruitBg from '../../asset/FruitBg.svg';
+import RoleSwitcher from '../RoleSwitcher';
+import { useParams } from 'react-router-dom';
+import { getWishById } from '../../service/fruitWish';
+import { Wish } from '../../service/getWishes';
 
 const WishFruit: React.FC = () => {
-  const title = '취업 잘 되게 해주세요';
-  const category = '진로';
-  const description =
-    '취업하기 위해 여러 회사에 지원하고 면접을 봤지만, 원하는 회사에서 좋은 결과가 있었으면 좋겠습니다.';
+  const { id } = useParams<{ id: string }>();
+  const [wish, setWish] = useState<Wish | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // fetchWish 호출
+    const fetchWish = async () => {
+      if (!id || isNaN(Number(id))) {
+        setError('Invalid ID');
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const wishData = await getWishById(Number(id));
+        console.log('Fetched wish data:', wishData);
+        setWish(wishData);
+      } catch (err) {
+        setError('소원 정보를 불러오는 데 실패했습니다.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWish();
+  }, [id]);
+
+  if (!wish) {
+    return <div>No wish found</div>;
+  }
+
   return (
     <div className="flex flex-col w-full h-screen">
       <Header />
@@ -22,11 +56,12 @@ const WishFruit: React.FC = () => {
         }}
       >
         <div className="text-center p-6 bg-opacity-70 rounded-lg max-w-md mx-auto">
-          <h1 className="text-3xl font-extrabold mb-4">{title}</h1>
-          <p className="text-sm text-gray-500 mb-4">{category}</p>
-          <p className="text-base">{description}</p>
+          <h1 className="text-4xl font-extrabold mb-8">{wish.title}</h1>
+          <p className="text-md text-gray-500 mb-8">{wish.category}</p>
+          <p className="text-3xl">{wish.content}</p>
         </div>
       </div>
+      <RoleSwitcher />
     </div>
   );
 };

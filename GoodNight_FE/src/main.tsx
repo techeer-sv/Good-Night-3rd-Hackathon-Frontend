@@ -8,6 +8,7 @@ import WishFruit from './components/wishFruit/WishFruit';
 import AllowPage from './components/allow/AllowPage';
 import { UserProvider } from './context/UserContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import Header from './components/Header';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -32,7 +33,7 @@ createRoot(document.getElementById('root')!).render(
           />
           <Route />
           <Route
-            path="/wish-fruit"
+            path="/wish-fruit/:id"
             element={
               <ProtectedRoute allowedRoles={['Admin', 'User']}>
                 <WishFruit />

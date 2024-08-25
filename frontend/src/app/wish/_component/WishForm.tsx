@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import postWish from '@/app/wish/_lib/postWish';
+import { useAuth } from '@/app/_component/AuthContext';
 
 type CategoryType =
   | '진로'
@@ -19,6 +20,7 @@ export default function WishForm() {
   const [category, setCategory] = useState<CategoryType | ''>('');
   const [error, setError] = useState('');
   const router = useRouter();
+  const { isAdmin } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,6 +40,16 @@ export default function WishForm() {
       setError('소원 등록에 실패했습니다. 다시 시도해주세요.');
     }
   };
+
+  if (isAdmin) {
+    return (
+      <div className="my-auto p-6 flex items-center justify-center">
+        <p className="text-2xl text-red-600 font-bold my-auto">
+          유저가 아니면 이 페이지에 접근할 권한이 없습니다.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-md bg-white shadow-md rounded-lg p-8 my-auto">

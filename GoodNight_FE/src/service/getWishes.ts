@@ -11,6 +11,7 @@ export interface Wish {
   category: string;
   content: string;
   createdAt: string;
+  status: string;
 }
 
 export async function getWishes(

@@ -12,7 +12,7 @@ interface WishDetail {
 const WishDetailPage: React.FC = () => {
   const { wishId } = useParams<{ wishId: string }>();
   const [wishDetail, setWishDetail] = useState<WishDetail | null>(null);
-  const [isAdmin, setIsAdmin] = useState<boolean>(() => {
+  const [isAdmin] = useState<boolean>(() => {
     const savedRole = localStorage.getItem('isAdmin');
     return savedRole === 'true';
   });

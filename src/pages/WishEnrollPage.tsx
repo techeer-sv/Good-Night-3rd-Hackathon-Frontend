@@ -6,7 +6,7 @@ const WishEnrollPage: React.FC = () => {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('진로');
   const [content, setContent] = useState('');
-  const [isAdmin, setIsAdmin] = useState<boolean>(() => {
+  const [isAdmin] = useState<boolean>(() => {
     // 로컬 스토리지에서 저장된 권한 상태를 읽어옴
     const savedRole = localStorage.getItem('isAdmin');
     return savedRole === 'true';

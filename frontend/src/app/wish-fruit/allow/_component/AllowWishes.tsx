@@ -7,11 +7,11 @@ import { approveWish } from '@/app/wish-fruit/allow/_lib/approveWish';
 import { rejectWish } from '@/app/wish-fruit/allow/_lib/rejectWish';
 
 type AllowWishesProps = {
-  wishes: Wish[];
+  wishes: Wish[] | null;
 };
 
 export default function AllowWishes({ wishes }: AllowWishesProps) {
-  const [pendingWishes, setPendingWishes] = useState<Wish[]>(wishes);
+  const [pendingWishes, setPendingWishes] = useState<Wish[] | null>(wishes);
 
   const handleApprove = async (id: number) => {
     try {
@@ -19,7 +19,7 @@ export default function AllowWishes({ wishes }: AllowWishesProps) {
       await approveWish(id);
 
       // 승인된 소원 목록에서 제거
-      setPendingWishes(pendingWishes.filter((wish) => wish.id !== id));
+      setPendingWishes(pendingWishes?.filter((wish) => wish.id !== id) || null);
     } catch (error) {
       console.error('소원 승인 실패:', error);
     }
@@ -31,7 +31,7 @@ export default function AllowWishes({ wishes }: AllowWishesProps) {
       await rejectWish(id);
 
       // 거절된 소원 목록에서 제거
-      setPendingWishes(pendingWishes.filter((wish) => wish.id !== id));
+      setPendingWishes(pendingWishes?.filter((wish) => wish.id !== id) || null);
     } catch (error) {
       console.error('소원 거절 실패:', error);
     }
@@ -44,6 +44,16 @@ export default function AllowWishes({ wishes }: AllowWishesProps) {
       <div className="my-auto bg-white glass bg-opacity-50 w-1/2 mx-auto p-6 flex items-center justify-center rounded-lg">
         <p className="text-2xl text-red-600 font-bold my-auto">
           관리자가 아니면 이 페이지에 접근할 권한이 없습니다.
+        </p>
+      </div>
+    );
+  }
+
+  if (!pendingWishes || pendingWishes.length === 0) {
+    return (
+      <div className="my-auto bg-white glass bg-opacity-50 w-1/2 mx-auto p-6 flex items-center justify-center rounded-lg">
+        <p className="text-2xl text-gray-600 font-bold my-auto">
+          승인 대기 중인 소원이 없습니다.
         </p>
       </div>
     );

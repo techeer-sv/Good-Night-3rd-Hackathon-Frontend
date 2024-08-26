@@ -21,3 +21,5 @@ export const createWish = (wish: CreatedWish) => {
     );
   }
 };
+
+export const getAllWish = () => {};

@@ -1,6 +1,7 @@
 import getWishDetail from '@/app/wish-fruit/[wishId]/_lib/getWishDetail';
 import { notFound } from 'next/navigation';
 import Comments from './_component/Comments';
+import Image from 'next/image';
 
 type Props = {
   params: {
@@ -18,13 +19,13 @@ export default async function WishFruit({ params }: Props) {
   }
 
   return (
-    <div
-      className="bg-gradient-to-b from-yellow-50 to-yellow-100 w-screen h-screen flex flex-col items-center justify-center"
-      style={{
-        backgroundImage: `url(/wish_background.webp)`,
-        backgroundSize: 'cover',
-      }}
-    >
+    <div className="w-screen h-screen flex flex-col items-center justify-center">
+      <Image
+        className="-z-10"
+        src="/wish_background.webp"
+        alt="wish_background"
+        fill
+      />
       <div className="w-1/3 bg-purple-800 shadow-md rounded-lg p-8 glass bg-opacity-50">
         <header className="w-full text-4xl font-bold text-white mb-4">
           {wish.title}

@@ -19,6 +19,7 @@ export default function WishForm() {
   const [content, setContent] = useState<string>('');
   const [category, setCategory] = useState<CategoryType | ''>('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const { isAdmin } = useAuth();
 
@@ -31,6 +32,8 @@ export default function WishForm() {
       return;
     }
 
+    setIsLoading(true);
+
     try {
       await postWish({ title, content, category });
 
@@ -38,6 +41,8 @@ export default function WishForm() {
       router.push('/');
     } catch (error) {
       setError('소원 등록에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -96,7 +101,7 @@ export default function WishForm() {
           type="submit"
           className="bg-yellow-300 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-all duration-200"
         >
-          소원 등록
+          {isLoading ? '등록 중...' : '소원 등록'}
         </button>
       </form>
     </div>

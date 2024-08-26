@@ -12,7 +12,12 @@ export default function AuthButton() {
   return (
     <label className="swap swap-rotate size-10 fixed bottom-12 right-12 z-50">
       {/* 체크박스로 상태 관리 */}
-      <input type="checkbox" checked={isAdmin} onChange={handleToggle} />
+      <input
+        type="checkbox"
+        checked={isAdmin}
+        onChange={handleToggle}
+        aria-label={isAdmin ? '유저 권한' : '관리자 권한'}
+      />
 
       {/* 유저 아이콘 */}
       <svg

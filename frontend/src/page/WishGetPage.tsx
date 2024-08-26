@@ -1,18 +1,29 @@
-import react from '@vitejs/plugin-react-swc';
+import React, { useEffect, useState } from 'react';
 import BackLayout from '../component/wishget/Backlayout';
 import NavBar from '../component/NavBar';
-import { useState } from 'react';
+import useWishStore from '../store';
+import { GotWish } from '../interface/Wish';
+import axios from 'axios';
 
 const WishGetPage: React.FC = () => {
+  const [wish, setWish] = useState<GotWish | undefined>();
+  const { wishId } = useWishStore();
+  const getWish = async (id: number) => {
+    const response = await axios.get(`http://localhost:8080/api/v1/wish/${id}`);
+    console.log(response.data);
+    setWish(response.data);
+  };
+  useEffect(() => {
+    getWish(wishId);
+  }, []);
   return (
     <BackLayout>
       <NavBar></NavBar>
       <div className="m-auto mt-[17vh] w-[30%] h-[50%] flex flex-col justify-center">
-        <p className="text-[32px] font-bold">취업 잘 되게 해주세요</p>
-        <p className="text-[16px] ">진로</p>
-        <p className="text-[20px] font-bold">
-          ㅁㄴ엄ㄴ어ㅏ안머아ㅓㅁ너ㅏㅁㄴ어ㅏㅇㄴ마ㅓdd,ld
-        </p>
+        {/* 조건부 렌더링으로 undefined 예외 처리 */}
+        <p className="text-[32px] font-bold">{wish?.title}</p>
+        <p className="text-[16px] ">{wish?.category}</p>
+        <p className="text-[20px] font-bold">{wish?.content}</p>
       </div>
     </BackLayout>
   );

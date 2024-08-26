@@ -5,44 +5,64 @@ import NavBtn from '../component/NavBtn';
 import ShowFruit from '../component/wishall/ShowFruits';
 import axios from 'axios';
 import useWishStore from '../store';
+import { useNavigate } from 'react-router-dom';
 
 const WishTreePage: React.FC = () => {
-  const [title, setTitle] = useState<String>('');
-  const { wishList, findByWish, setWishList } = useWishStore();
-  const [state, setState] = useState<number>(1);
+  const navigate = useNavigate();
+  const { wishList, findByWish, setWishList, wishId, setWishId, resetAll } =
+    useWishStore();
+  const [state, setState] = useState<boolean>(false);
+
   const handleShowWish = async () => {
     const response = await axios.get('http://localhost:8080/api/v1/wish/list');
     setWishList(response.data);
-    console.log(response.data[0].wishId);
   };
+
   const handleTest = () => {
     console.log(findByWish(1));
   };
+
   const handleClickWish = (id: number) => {
-    setState(id);
-    console.log(id);
+    setWishId(id);
+    setState(true);
   };
+
   useEffect(() => {
-    //랜더링 시 모든 리스트 요청
+    resetAll();
     handleShowWish();
-  }, []);
+  }, [resetAll]);
+
   useEffect(() => {
-    console.log(state);
-  }, [state]);
+    if (state) {
+      navigate('/get');
+    }
+  }, [state, navigate]);
+
   return (
     <BackLayout>
       <NavBar>
-        <NavBtn buttonText="소원열매 달기" addClassName="text-[16px]"></NavBtn>
+        <div>
+          <NavBtn
+            buttonText="모드전환"
+            addClassName="text-[16px] mr-[5px]"
+          ></NavBtn>
+          <NavBtn
+            buttonText="소원열매 달기"
+            addClassName="text-[16px]"
+          ></NavBtn>
+        </div>
       </NavBar>
       <div className="w-[50%] h-[100%] m-auto flex">
-        {wishList.map((wish, index) => (
-          <ShowFruit
-            key={wish.wishId}
-            wishTitle={wish.title}
-            wishId={wish.wishId}
-            onClick={handleClickWish}
-          ></ShowFruit>
-        ))}
+        {wishList.map((wish) =>
+          wish.is_confirmed ? (
+            <ShowFruit
+              key={wish.wishId}
+              wishTitle={wish.title}
+              wishId={wish.wishId}
+              onClick={handleClickWish}
+            />
+          ) : null,
+        )}
       </div>
       <button onClick={handleTest}>테스트용</button>
     </BackLayout>

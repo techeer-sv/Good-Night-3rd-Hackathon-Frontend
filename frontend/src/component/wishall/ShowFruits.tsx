@@ -16,7 +16,7 @@ const ShowFruit: React.FC<ShowFruitProps> = ({
   return (
     <div
       onClick={() => onClick(wishId)} // 수정된 부분
-      className="w-[300px] h-[350px] flex flex-col justify-center items-center bg-blue-200"
+      className="w-[300px] h-[350px] flex flex-col justify-center items-center"
     >
       <img className="w-[150px] h-[150px]" src={fruitImg} alt="Fruit" />
       <p className="text-[25px] font-bold mt-[1vh]">{wishTitle}</p>

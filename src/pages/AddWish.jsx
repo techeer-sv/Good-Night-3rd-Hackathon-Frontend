@@ -11,7 +11,8 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 900px;
+  height: 500px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 40px 20px;
   background-image: url(${addwishImg});
@@ -24,7 +25,7 @@ const Container = styled.div`
 const Title = styled.h2`
   margin-bottom: 20px;
   font-size: 1.5rem;
-  color: #fff;
+  color: #ffffff;
 `;
 
 const Row = styled.div`

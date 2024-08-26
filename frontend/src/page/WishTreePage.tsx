@@ -4,13 +4,15 @@ import NavBar from '../component/NavBar';
 import NavBtn from '../component/NavBtn';
 import ShowFruit from '../component/wishall/ShowFruits';
 import axios from 'axios';
-import useWishStore from '../store';
+import useWishStore from '../wishstore';
 import { useNavigate } from 'react-router-dom';
+import useAuthorityStore from '../authoritystore';
 
 const WishTreePage: React.FC = () => {
   const navigate = useNavigate();
   const { wishList, findByWish, setWishList, wishId, setWishId, resetAll } =
     useWishStore();
+  const { authority, setAuthority } = useAuthorityStore();
   const [state, setState] = useState<boolean>(false);
 
   const handleShowWish = async () => {
@@ -27,10 +29,17 @@ const WishTreePage: React.FC = () => {
     setState(true);
   };
 
+  const handleModeChange = () => {
+    setAuthority();
+  };
+
+  const handleConfirm = () => {
+    navigate('/confirm');
+  };
   useEffect(() => {
     resetAll();
     handleShowWish();
-  }, [resetAll]);
+  }, []);
 
   useEffect(() => {
     if (state) {
@@ -45,16 +54,25 @@ const WishTreePage: React.FC = () => {
           <NavBtn
             buttonText="모드전환"
             addClassName="text-[16px] mr-[5px]"
+            onClick={handleModeChange}
           ></NavBtn>
           <NavBtn
             buttonText="소원열매 달기"
             addClassName="text-[16px]"
           ></NavBtn>
+          {authority ? (
+            <NavBtn
+              onClick={handleConfirm}
+              buttonText="소원승인"
+              addClassName="ml-[5px] text-[16px]"
+            ></NavBtn>
+          ) : null}
+          ;
         </div>
       </NavBar>
       <div className="w-[50%] h-[100%] m-auto flex">
         {wishList.map((wish) =>
-          wish.is_confirmed ? (
+          wish.isConfirmed ? (
             <ShowFruit
               key={wish.wishId}
               wishTitle={wish.title}

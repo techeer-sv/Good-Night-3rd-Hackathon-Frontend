@@ -10,5 +10,5 @@ export interface GotWish {
   title: String;
   content: String;
   category: String;
-  is_confirmed: boolean; // 승인여부 확인
+  isConfirmed: boolean; // 승인여부 확인
 }

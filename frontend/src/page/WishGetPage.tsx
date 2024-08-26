@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import BackLayout from '../component/wishget/Backlayout';
 import NavBar from '../component/NavBar';
-import useWishStore from '../store';
+import useWishStore from '../wishstore';
 import { GotWish } from '../interface/Wish';
 import axios from 'axios';
 

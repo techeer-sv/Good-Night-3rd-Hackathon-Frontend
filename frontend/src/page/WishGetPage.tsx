@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react-swc';
 import BackLayout from '../component/wishget/Backlayout';
 import NavBar from '../component/NavBar';
+import { useState } from 'react';
 
 const WishGetPage: React.FC = () => {
   return (

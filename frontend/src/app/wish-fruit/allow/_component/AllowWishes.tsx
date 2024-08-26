@@ -13,13 +13,19 @@ type AllowWishesProps = {
 export default function AllowWishes({ wishes }: AllowWishesProps) {
   const [pendingWishes, setPendingWishes] = useState<Wish[] | null>(wishes);
 
+  const removeWishById = (id: number) => {
+    setPendingWishes(
+      (prevWishes) => prevWishes?.filter((wish) => wish.id !== id) || null,
+    );
+  };
+
   const handleApprove = async (id: number) => {
     try {
       // 거절 API 호출
       await approveWish(id);
 
       // 승인된 소원 목록에서 제거
-      setPendingWishes(pendingWishes?.filter((wish) => wish.id !== id) || null);
+      removeWishById(id);
     } catch (error) {
       console.error('소원 승인 실패:', error);
     }
@@ -31,7 +37,7 @@ export default function AllowWishes({ wishes }: AllowWishesProps) {
       await rejectWish(id);
 
       // 거절된 소원 목록에서 제거
-      setPendingWishes(pendingWishes?.filter((wish) => wish.id !== id) || null);
+      removeWishById(id);
     } catch (error) {
       console.error('소원 거절 실패:', error);
     }

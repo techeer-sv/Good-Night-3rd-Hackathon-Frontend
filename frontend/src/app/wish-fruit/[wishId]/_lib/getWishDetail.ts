@@ -1,4 +1,10 @@
-export default async function getWishDetail({ wishId }: { wishId: string }) {
+import { Wish } from '@/model/Wish';
+
+export default async function getWishDetail({
+  wishId,
+}: {
+  wishId: string;
+}): Promise<Wish | null> {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/wishes/${wishId}`,

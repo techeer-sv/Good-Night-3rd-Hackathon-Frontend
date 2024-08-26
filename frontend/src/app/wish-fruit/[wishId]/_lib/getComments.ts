@@ -1,4 +1,8 @@
-export default async function getComments(wishId: string) {
+import { Comment } from '@/model/Comment';
+
+export default async function getComments(
+  wishId: string,
+): Promise<Comment | null> {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/comments/${wishId}`,

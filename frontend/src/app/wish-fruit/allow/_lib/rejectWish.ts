@@ -1,4 +1,6 @@
-export const rejectWish = async (wishId: number) => {
+import { Wish } from '@/model/Wish';
+
+export const rejectWish = async (wishId: number): Promise<Wish | null> => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/wishes/${wishId}/reject`,

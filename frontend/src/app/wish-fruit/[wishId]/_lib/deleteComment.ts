@@ -1,4 +1,6 @@
-export default async function deleteComment(commentId: string) {
+export default async function deleteComment(
+  commentId: string,
+): Promise<'' | null> {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/comments/${commentId}`,

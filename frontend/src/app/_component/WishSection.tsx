@@ -12,6 +12,17 @@ export default function WishSection() {
   const [isLoading, setIsLoading] = useState<boolean>(false); // 데이터 로딩 상태
   const [hasMore, setHasMore] = useState<boolean>(true); // 추가 데이터 여부
 
+  const categories = [
+    { value: '', label: '모든 카테고리' },
+    { value: '진로', label: '진로' },
+    { value: '건강', label: '건강' },
+    { value: '인간 관계', label: '인간 관계' },
+    { value: '돈', label: '돈' },
+    { value: '목표', label: '목표' },
+    { value: '학업/성적', label: '학업/성적' },
+    { value: '기타', label: '기타' },
+  ];
+
   const observerRef = useRef<IntersectionObserver | null>(null); // IntersectionObserver 참조
 
   // 무한 스크롤을 위한 마지막 요소 감지
@@ -63,14 +74,11 @@ export default function WishSection() {
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
-          <option value="">모든 카테고리</option>
-          <option value="진로">진로</option>
-          <option value="건강">건강</option>
-          <option value="인간 관계">인간 관계</option>
-          <option value="돈">돈</option>
-          <option value="목표">목표</option>
-          <option value="학업/성적">학업/성적</option>
-          <option value="기타">기타</option>
+          {categories.map((item) => (
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
         </select>
       </div>
 

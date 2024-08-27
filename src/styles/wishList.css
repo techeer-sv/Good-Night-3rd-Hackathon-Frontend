@@ -93,3 +93,22 @@
     flex-direction: column;
     gap: 0.5rem;
 }
+
+/* CSS 파일: wishList.css */
+
+/* 기존 스타일에 추가 */
+.wish-item {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #000000;
+    /* 검은색 텍스트 */
+}
+
+.wish-label {
+    font-weight: bold;
+    /* 레이블 강조 */
+    color: #000000;
+    /* 검은색 텍스트 */
+    margin-right: 0.5rem;
+    /* 레이블과 내용 사이 간격 추가 */
+}

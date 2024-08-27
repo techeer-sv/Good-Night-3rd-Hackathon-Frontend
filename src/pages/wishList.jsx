@@ -127,9 +127,15 @@ const WishList = () => {
                                         <div key={wish.id} className='wish-card' ref={lastElementRef}>
                                             <img src={wish.image || defaultImage} alt={wish.title} className='wish-image' />
                                             <div className='wish-info'>
-                                                <div className='wish-title'>{wish.title}</div>
-                                                <div className='wish-category'>{wish.category}</div>
-                                                <div className='wish-date'>{new Date(wish.createDate).toLocaleDateString()}</div>
+                                                <div className='wish-item'>
+                                                    <span className='wish-label'>제목:</span> {wish.title}
+                                                </div>
+                                                <div className='wish-item'>
+                                                    <span className='wish-label'>카테고리:</span> {wish.category}
+                                                </div>
+                                                <div className='wish-item'>
+                                                    <span className='wish-label'>작성일:</span> {new Date(wish.createDate).toLocaleDateString()}
+                                                </div>
                                             </div>
                                         </div>
                                     );
@@ -138,9 +144,16 @@ const WishList = () => {
                                         <div key={wish.id} className='wish-card'>
                                             <img src={wish.image || defaultImage} alt={wish.title} className='wish-image' />
                                             <div className='wish-info'>
-                                                <div className='wish-title'>{wish.title}</div>
-                                                <div className='wish-category'>{wish.category}</div>
-                                                <div className='wish-date'>{new Date(wish.createDate).toLocaleDateString()}</div>                                        </div>
+                                                <div className='wish-item'>
+                                                    <span className='wish-label'>제목:</span> {wish.title}
+                                                </div>
+                                                <div className='wish-item'>
+                                                    <span className='wish-label'>카테고리:</span> {wish.category}
+                                                </div>
+                                                <div className='wish-item'>
+                                                    <span className='wish-label'>작성일:</span> {new Date(wish.createDate).toLocaleDateString()}
+                                                </div>
+                                            </div>
                                         </div>
                                     );
                                 }

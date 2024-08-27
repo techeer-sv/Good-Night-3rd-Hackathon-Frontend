@@ -1,3 +1,5 @@
+/* CSS 파일: wishList.css */
+
 .container {
     display: flex;
     flex-direction: column;
@@ -79,9 +81,15 @@
 .wish-category,
 .wish-date {
     color: #000000;
-    /* 텍스트 색상을 검은색으로 변경 */
+    /* 텍스트 색상을 검은색으로 설정 */
     font-weight: bold;
     /* 글자 굵게 */
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
-    /* 글자 그림자 */
+    /* 글자 그림자 추가 */
+}
+
+.wish-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }

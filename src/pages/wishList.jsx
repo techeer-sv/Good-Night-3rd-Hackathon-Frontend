@@ -40,7 +40,9 @@ const WishList = () => {
             // 이전 데이터에 새 데이터 추가
             if (page === 0) {
                 setWishes(data);
-            } else { setWishes(prevWishes => [...prevWishes, ...data]); }
+            } else {
+                setWishes(prevWishes => [...prevWishes, ...data]);
+            }
 
         } catch (error) {
             setError('Error fetching posts');
@@ -138,8 +140,7 @@ const WishList = () => {
                                             <div className='wish-info'>
                                                 <div className='wish-title'>{wish.title}</div>
                                                 <div className='wish-category'>{wish.category}</div>
-                                                <div className='wish-date'>{new Date(wish.createDate).toLocaleDateString()}</div>
-                                            </div>
+                                                <div className='wish-date'>{new Date(wish.createDate).toLocaleDateString()}</div>                                        </div>
                                         </div>
                                     );
                                 }

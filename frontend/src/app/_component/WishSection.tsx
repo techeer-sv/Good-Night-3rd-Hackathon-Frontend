@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import WishFruit from '@/app/_component/WishFruit';
 import { getWishes } from '@/app/_lib/getWishes';
 import { Wish } from '@/model/Wish';
+import InfiniteScroll from '@/app/_component/InfiniteScroll';
 
 export default function WishSection() {
   const [category, setCategory] = useState<string>(''); // 선택된 카테고리를 저장할 상태
@@ -22,11 +23,6 @@ export default function WishSection() {
     { value: '학업/성적', label: '학업/성적' },
     { value: '기타', label: '기타' },
   ];
-
-  const observerRef = useRef<IntersectionObserver | null>(null); // IntersectionObserver 참조
-
-  // 무한 스크롤을 위한 마지막 요소 감지
-  const lastWishElementRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const fetchWishes = async () => {
@@ -49,20 +45,9 @@ export default function WishSection() {
     setHasMore(true);
   }, [category]);
 
-  useEffect(() => {
-    // 새로운 IntersectionObserver를 생성하여 마지막 요소를 감지
-    if (observerRef.current) observerRef.current.disconnect();
-
-    observerRef.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && hasMore && !isLoading) {
-        setPage((prevPage) => prevPage + 1); // 페이지 증가
-      }
-    });
-
-    if (lastWishElementRef.current) {
-      observerRef.current.observe(lastWishElementRef.current);
-    }
-  }, [hasMore, isLoading]);
+  const loadMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
 
   return (
     <div className="w-full">
@@ -81,18 +66,22 @@ export default function WishSection() {
           ))}
         </select>
       </div>
-
-      <div className="grid grid-cols-3 gap-8 overflow-y-scroll h-[60vh]">
-        {wishes.map((wish, index) => (
-          <div
-            key={wish.id}
-            ref={index === wishes.length - 1 ? lastWishElementRef : null}
-            className="flex flex-col justify-between min-h-[calc(60vh/2-2rem)]"
-          >
-            <WishFruit wish={wish} />
-          </div>
-        ))}
-      </div>
+      <InfiniteScroll
+        loadMore={loadMore}
+        hasMore={hasMore}
+        isLoading={isLoading}
+      >
+        <div className="grid grid-cols-3 gap-8 overflow-y-scroll h-[60vh]">
+          {wishes.map((wish, index) => (
+            <div
+              key={wish.id}
+              className="flex flex-col justify-between min-h-[calc(60vh/2-2rem)]"
+            >
+              <WishFruit wish={wish} />
+            </div>
+          ))}
+        </div>
+      </InfiniteScroll>
     </div>
   );
 }

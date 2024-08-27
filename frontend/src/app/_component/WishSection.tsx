@@ -27,12 +27,23 @@ export default function WishSection() {
   useEffect(() => {
     const fetchWishes = async () => {
       setIsLoading(true);
-      const newWishes = await getWishes('true', category, page.toString(), '3');
-      if (newWishes) {
-        setWishes((prevWishes: Wish[]) => [...prevWishes, ...newWishes]);
-        setHasMore(newWishes.length > 0); // 더 가져올 데이터가 있는지 확인
+
+      try {
+        const newWishes = await getWishes(
+          'true',
+          category,
+          page.toString(),
+          '3',
+        );
+        if (newWishes) {
+          setWishes((prevWishes: Wish[]) => [...prevWishes, ...newWishes]);
+          setHasMore(newWishes.length > 0); // 더 가져올 데이터가 있는지 확인
+        }
+      } catch (error) {
+        console.error('소원 데이터를 불러오는 중 오류가 발생했습니다:', error);
+      } finally {
+        setIsLoading(false); // 에러가 발생해도 로딩 상태를 false로 설정
       }
-      setIsLoading(false);
     };
 
     fetchWishes();

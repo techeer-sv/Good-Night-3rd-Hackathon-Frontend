@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { CreatedWish } from '../../interface/Wish';
 import { createWish } from '../../service/WishService';
+import { useNavigate } from 'react-router-dom';
 
 const WishAddForm: React.FC = () => {
   const [category, setCategory] = useState<String>('');
@@ -25,6 +26,7 @@ const WishAddForm: React.FC = () => {
     console.log(content);
   };
 
+  const navigate = useNavigate();
   const handleSubmitWish = async () => {
     const wish: CreatedWish = {
       title: title,
@@ -34,6 +36,7 @@ const WishAddForm: React.FC = () => {
 
     const response = await createWish(wish);
     console.log(response);
+    navigate('/');
   };
 
   return (

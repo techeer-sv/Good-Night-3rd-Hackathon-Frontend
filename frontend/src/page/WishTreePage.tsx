@@ -33,8 +33,8 @@ const WishTreePage: React.FC = () => {
     setAuthority();
   };
 
-  const handleConfirm = () => {
-    navigate('/confirm');
+  const handleRedirect = (url: string) => {
+    navigate(url);
   };
   useEffect(() => {
     resetAll();
@@ -57,12 +57,13 @@ const WishTreePage: React.FC = () => {
             onClick={handleModeChange}
           ></NavBtn>
           <NavBtn
+            onClick={() => handleRedirect('/add')}
             buttonText="소원열매 달기"
             addClassName="text-[16px]"
           ></NavBtn>
           {authority ? (
             <NavBtn
-              onClick={handleConfirm}
+              onClick={() => handleRedirect('/confirm')}
               buttonText="소원승인"
               addClassName="ml-[5px] text-[16px]"
             ></NavBtn>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import BackLayout from '../component/BackLayout';
 import NavBar from '../component/NavBar';
 import NavBtn from '../component/NavBtn';
@@ -8,6 +8,7 @@ import axios from 'axios';
 
 const WishConfirmPage: React.FC = () => {
   const { wishList } = useWishStore(); // wishList를 가져옵니다.
+  const [state, setState] = useState<number>(0);
 
   // 소원을 승인하는 함수
   const handleConfirm = async (wishId: number, confirm: boolean) => {
@@ -23,13 +24,16 @@ const WishConfirmPage: React.FC = () => {
         },
       );
       console.log(`소원 ID ${wishId} ${confirm ? '승인됨' : '거절됨'}.`);
+      setState((pre) => pre + 1);
     } catch (error) {
       console.error('Error confirming wish:', error);
     }
   };
+
   useEffect(() => {
     console.log(wishList);
-  });
+  }, [state]);
+
   return (
     <BackLayout>
       <NavBar>

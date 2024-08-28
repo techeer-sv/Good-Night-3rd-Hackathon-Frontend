@@ -9,7 +9,7 @@ const useAuthorityStore = create<AuthorityStore>((set, get) => ({
   authority: false,
   setAuthority: () => {
     const state = get();
-    set({ authority: !state.authority }); // 상태를 반전시킵니다.
+    set({ authority: !state.authority });
   },
 }));
 

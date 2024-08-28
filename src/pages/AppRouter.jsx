@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import App from '../App';
 import WishList from './wishList';
 import Wish from './wishForm';
+import WishDetail from './wishDetail';
 
 function AppRouter() {
     return (
@@ -11,6 +12,7 @@ function AppRouter() {
                 <Routes>
                     <Route path="/" element={<WishList />} />
                     <Route path="/wish" element={<Wish />} />
+                    <Route path="/wishdetail/:id" element={<WishDetail />} />
                 </Routes>
             </App>
         </Router>

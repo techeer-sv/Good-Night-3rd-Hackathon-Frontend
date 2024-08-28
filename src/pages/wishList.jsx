@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom'; // useNavigate 임포트
 import '../styles/wishList.css'; // CSS 파일 임포트
 import Navbar from '../components/Navbar'; // Navbar 컴포넌트 임포트
 import defaultImage from '../assets/dragon.png'; // 기본 이미지 임포트
@@ -11,6 +12,7 @@ const WishList = () => {
     const [page, setPage] = useState(0); // 현재 페이지
     const [hasMore, setHasMore] = useState(true); // 더 가져올 데이터가 있는지 여부
     const [filters, setFilters] = useState({ category: 'ALL', status: 'ALL' }); // 필터 상태
+    const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅 사용
 
     // 데이터 가져오기 함수
     const fetchPosts = useCallback(async () => {
@@ -86,6 +88,11 @@ const WishList = () => {
         setHasMore(true); // 더 많은 데이터가 있을 수 있으므로 재설정
     };
 
+    // 이미지 클릭 시 상세 페이지로 이동
+    const handleImageClick = (id) => {
+        navigate(`/wishdetail/${id}`); // WishDetail 페이지로 이동
+    };
+
     return (
         <div className='container'>
             <Navbar />
@@ -124,7 +131,12 @@ const WishList = () => {
                                 // 마지막 요소에 대한 참조 설정
                                 if (index === wishes.length - 1) {
                                     return (
-                                        <div key={wish.id} className='wish-card' ref={lastElementRef}>
+                                        <div
+                                            key={wish.id}
+                                            className='wish-card'
+                                            ref={lastElementRef}
+                                            onClick={() => handleImageClick(wish.id)} // 이미지 클릭 이벤트 처리
+                                        >
                                             <img src={wish.image || defaultImage} alt={wish.title} className='wish-image' />
                                             <div className='wish-info'>
                                                 <div className='wish-item'>
@@ -141,7 +153,11 @@ const WishList = () => {
                                     );
                                 } else {
                                     return (
-                                        <div key={wish.id} className='wish-card'>
+                                        <div
+                                            key={wish.id}
+                                            className='wish-card'
+                                            onClick={() => handleImageClick(wish.id)} // 이미지 클릭 이벤트 처리
+                                        >
                                             <img src={wish.image || defaultImage} alt={wish.title} className='wish-image' />
                                             <div className='wish-info'>
                                                 <div className='wish-item'>

@@ -11,7 +11,7 @@ const WishList = () => {
     const [error, setError] = useState(null); // 에러 상태
     const [page, setPage] = useState(0); // 현재 페이지
     const [hasMore, setHasMore] = useState(true); // 더 가져올 데이터가 있는지 여부
-    const [filters, setFilters] = useState({ category: 'ALL', status: 'ALL' }); // 필터 상태
+    const [filters, setFilters] = useState({ category: 'ALL', status: 'APPROVED' }); // 필터 상태
     const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅 사용
 
     // 데이터 가져오기 함수

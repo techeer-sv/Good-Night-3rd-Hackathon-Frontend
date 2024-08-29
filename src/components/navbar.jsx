@@ -16,7 +16,7 @@ const Navbar = () => {
     // 버튼 클릭 시 이동 경로 설정
     const handleButtonClick = () => {
         if (role === 'Admin') {
-            window.location.href = '/wish-approval'; // 소원 열매 승인 경로로 이동
+            window.location.href = '/wishallow'; // 소원 열매 승인 경로로 이동
         } else {
             window.location.href = '/wish'; // 소원 열매 달기 경로로 이동
         }

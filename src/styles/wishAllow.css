@@ -1,0 +1,27 @@
+.approve-button {
+    background-color: #4CAF50;
+    /* 녹색 버튼 */
+    color: white;
+    padding: 10px;
+    margin-right: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.reject-button {
+    background-color: #f44336;
+    /* 빨간색 버튼 */
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.approve-button:hover,
+.reject-button:hover {
+    opacity: 0.8;
+}

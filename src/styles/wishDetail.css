@@ -1,0 +1,82 @@
+/* 전체 컨테이너 */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* 소원 상세 컨테이너 */
+.wish-detail-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
+    background-image: url('../assets/image.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+/* 소원 상세 제목 */
+.wish-detail-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 800px;
+    color: #ff9800;
+}
+
+/* 소원 상세 그룹 */
+.wish-detail-group {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+}
+
+/* 소원 상세 레이블 */
+.wish-detail-label {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #ff9800;
+}
+
+/* 소원 상세 정보 */
+.wish-detail-info {
+    font-size: 1rem;
+    color: #333;
+    /* 검은색으로 변경 */
+    margin: 0;
+}
+
+/* 삭제 버튼 */
+.wish-detail-button {
+    padding: 15px 20px;
+    border: none;
+    background-color: #ff9800;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 200px;
+    margin-top: 20px;
+}
+
+.wish-detail-button:hover {
+    background-color: #e68900;
+}

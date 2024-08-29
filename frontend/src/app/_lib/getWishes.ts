@@ -1,4 +1,5 @@
 import { Wish } from '@/model/Wish';
+import { createQueryString } from '@/app/_util/createQueryString';
 
 export const getWishes = async (
   confirm?: string,
@@ -7,23 +8,16 @@ export const getWishes = async (
   limit?: string,
 ): Promise<Wish[] | null> => {
   try {
-    // 파라미터가 존재하지 않을 경우 무시하도록 함
-    const params = new URLSearchParams();
-    if (confirm) {
-      params.append('isConfirmed', confirm);
-    }
-    if (category) {
-      params.append('category', category);
-    }
-    if (page) {
-      params.append('page', page);
-    }
-    if (limit) {
-      params.append('limit', limit);
-    }
+    const params = {
+      isConfirmed: confirm,
+      category: category,
+      page: page,
+      limit: limit,
+    };
 
+    const queryString = createQueryString(params);
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/wishes?${params.toString()}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/wishes?${queryString}`,
       {
         method: 'GET',
         headers: {

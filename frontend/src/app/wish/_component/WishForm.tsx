@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import postWish from '@/app/wish/_lib/postWish';
 import { useAuth } from '@/app/_component/AuthContext';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 type CategoryType =
+  | ''
   | '진로'
   | '건강'
   | '인간 관계'
@@ -14,35 +15,46 @@ type CategoryType =
   | '학업/성적'
   | '기타';
 
+type FormValues = {
+  title: string;
+  content: string;
+  category: CategoryType;
+};
+
 export default function WishForm() {
-  const [title, setTitle] = useState<string>('');
-  const [content, setContent] = useState<string>('');
-  const [category, setCategory] = useState<CategoryType | ''>('');
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>({
+    defaultValues: {
+      title: '',
+      content: '',
+      category: '',
+    },
+  });
   const router = useRouter();
   const { isAdmin } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const categories = [
+    { value: '', label: '모든 카테고리' },
+    { value: '진로', label: '진로' },
+    { value: '건강', label: '건강' },
+    { value: '인간 관계', label: '인간 관계' },
+    { value: '돈', label: '돈' },
+    { value: '목표', label: '목표' },
+    { value: '학업/성적', label: '학업/성적' },
+    { value: '기타', label: '기타' },
+  ];
 
-    // 입력 유효성 검사
-    if (!title || !content || !category) {
-      setError('모든 필드를 입력해주세요.');
-      return;
-    }
-
-    setIsLoading(true);
-
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      await postWish({ title, content, category });
+      await postWish(data);
 
       // 등록 후 페이지 이동
       router.push('/');
     } catch (error) {
-      setError('소원 등록에 실패했습니다. 다시 시도해주세요.');
-    } finally {
-      setIsLoading(false);
+      console.error('소원 등록에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
@@ -61,47 +73,49 @@ export default function WishForm() {
       <h2 className="text-2xl font-bold text-center text-yellow-300 mb-6">
         소원 빌기
       </h2>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <div>
           <label className="block text-yellow-300">제목</label>
           <input
             type="text"
             className="w-full p-2 border border-gray-300 rounded mt-1"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            {...register('title', { required: '제목을 입력해주세요' })}
           />
+          {errors.title && (
+            <p className="text-red-500 text-sm">{errors.title.message}</p>
+          )}
         </div>
         <div>
           <label className="block text-yellow-300">내용</label>
           <textarea
             className="w-full p-2 border border-gray-300 rounded mt-1"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            {...register('content', { required: '내용을 입력해주세요' })}
           />
+          {errors.content && (
+            <p className="text-red-500 text-sm">{errors.content.message}</p>
+          )}
         </div>
         <div>
           <label className="block text-yellow-300">카테고리</label>
           <select
             className="w-full p-2 border border-gray-300 rounded mt-1"
-            value={category}
-            onChange={(e) => setCategory(e.target.value as CategoryType)}
+            {...register('category', { required: '카테고리를 선택해주세요' })}
           >
-            <option value="">카테고리 선택</option>
-            <option value="진로">진로</option>
-            <option value="건강">건강</option>
-            <option value="인간 관계">인간 관계</option>
-            <option value="돈">돈</option>
-            <option value="목표">목표</option>
-            <option value="학업/성적">학업/성적</option>
-            <option value="기타">기타</option>
+            {categories.map((item) => (
+              <option key={item.value} value={item.value}>
+                {item.label}
+              </option>
+            ))}
           </select>
+          {errors.category && (
+            <p className="text-red-500 text-sm">{errors.category.message}</p>
+          )}
         </div>
-        {error && <div className="text-red-500 text-sm">{error}</div>}
         <button
           type="submit"
           className="bg-yellow-300 text-white px-6 py-2 rounded-lg shadow-md hover:bg-yellow-600 transition-all duration-200"
         >
-          {isLoading ? '등록 중...' : '소원 등록'}
+          {isSubmitting ? '등록 중...' : '소원 등록'}
         </button>
       </form>
     </div>

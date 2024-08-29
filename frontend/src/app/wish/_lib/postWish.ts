@@ -1,6 +1,7 @@
 import { Wish } from '@/model/Wish';
 
 type CategoryType =
+  | ''
   | '진로'
   | '건강'
   | '인간 관계'
